@@ -48,7 +48,7 @@
 				 <tr>
 				 <th>父目录：</th>
             		<td>
-					<select>
+					<select name = "parent">
               			<option value="">请选择</option>
 						<option value="tsyx">图书音像</option>
 						<option value="sssh">时尚生活</option>
@@ -60,20 +60,19 @@
 				 <tr>
 				 <th>目录描述：</th>
 				 <td>
-				 <textarea name="textarea" class="textAreaStyle">该目录下包括图书、音像商品，其中图书涵盖了计算机用书、外语书籍、教科书、考试用书等，种类齐全。</textarea>
+				 <textarea name="description" class="textAreaStyle">该目录下包括图书、音像商品，其中图书涵盖了计算机用书、外语书籍、教科书、考试用书等，种类齐全。</textarea>
 				 </td>
           		 </tr>
 				 <tr>
 				 <th>目录图片：</th>
-					<td><img src="../image/tsyx.gif" /><br>
          	 	    <input type="file" name="file">&nbsp;<input type="submit" name="Submit" value="上传"></td>
           		 </tr>
 				 <tr>
 				 <th></th>
 			 	  <td>
-				  <input type="Button" name="button2" value="提交" onClick="checkcategoryform()">
+				  <input type="submit" name="button2" value="提交" onClick="checkcategoryform()">
 				  <input type="Reset" name="button1" value="重填" onClick="clear()">
-				  <input type="Button" name="button22" value="返回" onClick="javascript:window.location.href='category_list.html'">				  
+				  <input type="Button" name="button22" value="返回" onClick="javascript:window.location.href='/edit_dir'">				  
 				  </td> </tr>
         </table>
 		</form>
