@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>BC2商城</title>
+<link href="{{ url_for('static', filename='back/css/frame.css') }}" rel="stylesheet" type="text/css">
+<script language="javascript">
+function clear(){
+
+document.form1.webUserEntity.name="";
+document.form1.webUserEntity.address="";
+document.form1.webUserEntity.postcode="";
+document.form1.webUserEntity.phone="";
+}
+</script>
+   </head>
+
+<body>
+<div id="container">
+	<div id="logalleft">
+		<div id="logalright">
+		<a href="" target="_parent">管理员 已登录|</a>
+	 	<a href="home.html" target="_parent">退出</a>
+		</div>
+	</div>
+	<div id="globallink">
+		<ul>
+			<li><a href="home.html">首页</a></li>
+			<li><a href="category_list.html">商品管理</a></li>
+			<li><a href="order_admin.html">订单管理</a></li>
+			<li><a href="salesdata_admin.html">销售量统计</a></li>
+			<li><a href="user_admin.html">会员管理</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+		</ul>
+	</div>
+	<div id="banner"></div>
+	<div id="main">
+		<div id="search2">
+			<div id="searchleft">
+				<img src="../image/ico_site.jpg" id="ico_site"/>
+				网站路径：<a href="salesdata_admin.html">销售量统计</a>&gt;&gt;<a href="#">销售量查询结果</a></div>
+		</div>
+		<div id="sendnote">
+			<div id="sendnotehead"><strong>查询结果</strong></div>
+			<div id="sendnotecontent">
+			<form action="" method="post" enctype="multipart/form-data" name="form1">
+				<table id="favorite">
+				<thead>
+					<tr>
+						<th>商品代码</th>
+						<th>商品名称</th>
+						<th>销售数量</th>
+						<th>销售单价</th>
+						<th>销售总价</th>
+					</tr>
+				</thead>
+				<tbody>
+				  <tr>
+            		<td>300254</td>
+					<td><a href="item_info.html">大学物理学.第四册：波动与光学（第2版）</a></td>
+					<td>500</td>
+					<td>￥8.50</td>
+					<td>￥4250</td>
+          		  </tr>
+				  <tr>
+            		<td>300040</td>
+					<td><a href="#">大学物理学.第一册：力学（第2版）</a></td>
+					<td>300</td>
+					<td>￥13.60</td>
+					<td>￥4080</td>
+          		  </tr>
+				   <tr>
+            		<td>300095</td>
+					<td><a href="#">大学物理学.第二册：热学（第2版）</a></td>
+					<td>450</td>
+					<td>￥8.08</td>
+					<td>￥3636</td>
+          		  </tr>
+				  <tr>
+            		<td>400212</td>
+					<td><a href="#">异国靓包系列-时尚女挎包A-03款(黄色)</a></td>
+					<td>100</td>
+					<td>￥145</td>
+					<td>￥14500</td>
+          		  </tr>
+				   <tr>
+            		<td></td>
+					<td></td>
+					<td></td>
+					<td>总销售额：</td>
+					<td><span class="red">￥26466</span></td>
+          		  </tr>
+				 </tbody>
+            </table>
+			</form> 
+			</div>
+		</div>
+		
+	<div id="footer">
+		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
+		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
+	</div>
+</div>
+
+</body>
+</html>

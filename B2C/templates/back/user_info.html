@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>BC2商城</title>
+<link href="{{ url_for('static', filename='back/css/frame.css') }}" rel="stylesheet" type="text/css"/>
+<script language="javascript">
+function clear(){
+
+document.form1.webUserEntity.name="";
+document.form1.webUserEntity.address="";
+document.form1.webUserEntity.postcode="";
+document.form1.webUserEntity.phone="";
+}
+</script>
+</head>
+
+<body>
+<div id="container">
+	<div id="logalleft">
+		<div id="logalright">
+		<a href="" target="_parent">管理员 已登录|</a>
+	 	<a href="home.html" target="_parent">退出</a>
+		</div>
+	</div>
+	<div id="globallink">
+		<ul>
+			<li><a href="home.html">首页</a></li>
+			<li><a href="category_list.html">商品管理</a></li>
+			<li><a href="order_admin.html">订单管理</a></li>
+			<li><a href="salesdata_admin.html">销售量统计</a></li>
+			<li><a href="user_admin.html">会员管理</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+		</ul>
+	</div>
+	<div id="banner"></div>
+	<div id="main">
+		<div id="search2">
+			<div id="searchleft">
+				<img src="../image/ico_site.jpg" id="ico_site"/>
+				网站路径：订单详细信息
+			</div>
+		</div>
+		<div id="double1">
+			<div id="doublehead1"><strong>配送信息</strong></div>
+			<div id="doublecontent1">
+			<form action="" method="post" enctype="multipart/form-data" name="form1">
+				<table id="doublecontenttable3">
+				 <tr>
+					<td>订单号</td>
+					<td>1483728</td>
+            		<td>客户号</td>
+					<td>zhangtong123@163.com</td>
+					<td>下单时间</td>
+					<td>2007-10-01&nbsp;10:25:04</td>
+         		 </tr>
+		  		 <tr>
+           			<td>订单金额</td>
+					<td>￥30.18</td>
+					<td>支付方式</td>
+					<td>货到付款</td>
+            		<td>送货方式</td>
+					<td>送货上门</td>
+			</tr>
+			 <tr>
+            	<td>收货人</td>
+			    <td><span class="inputHeader">张桐</span></td>
+			    <td>收货人地址</td>
+            <td>北京市海淀区翠微路甲5号</td>
+					<td>订单状态</td>
+					<td>已支付</td>
+			</tr>
+			 <tr>
+            <td>收货人E-mail</td>
+			<td>zhangtong123@163.com</td>
+			<td>收货人手机</td>
+			<td>13812345678</td>
+					<td></td>
+					<td></td>					
+				 </tr>
+				</from> 
+            </table>
+			</div></div>
+			<div id="double2">
+			<div id="doublehead2"><strong>商品信息</strong></div>
+			<div id="doublecontent2">
+			<form action="" method="post" enctype="multipart/form-data" name="form1">
+				<table width="98%" id="">
+					<tr>
+						<td width="11%" align="left" class="inputHeader">客户号：</td>
+          <td width="38%" align="left" class="inputHeader">zhangtong123@163.com</td>
+          <td width="9%" align="left" class="inputContent">昵称：</td>
+          <td width="7%" align="left" class="inputContent">张桐</td>
+          <td width="14%" align="left" class="inputContent">注册时间：</td>
+          <td width="21%" align="left" class="inputContent"><span class="inputHeader">2007-08-26 10:23:12 </span></td>
+        </tr>
+        <tr>
+          <td height="20" align="left" class="inputHeader">&nbsp;</td>
+          <td align="left" class="inputHeader"><a href="item_info.html">大学物理学.第四册：波动与光学（第2版）</a></td>
+          <td align="left" class="inputContent">￥10.00</td>
+          <td align="left" class="inputContent">￥8.50</td>
+          <td colspan="2" align="left" class="inputContent"><font color="#CC0000">1</font></td>
+        </tr>
+        <tr>
+          <td height="22" align="left" class="inputHeader">商品名称</td>
+          <td align="left" class="inputHeader"><a href="#">大学物理学.第一册：力学（第2版）</a></td>
+          <td align="left" class="inputContent">￥16.00</td>
+          <td align="left" class="inputContent">￥13.60</td>
+          <td colspan="2" align="left" class="inputContent"><font color="#CC0000">1</font></td>
+        </tr>
+
+        <tr>
+          <td align="left" class="inputHeader">&nbsp;</td>
+          <td align="left" class="inputHeader"><a href="#">大学物理学.第二册：热学（第2版）</a></td>
+          <td align="left" class="inputContent">￥9.50</td>
+          <td align="left" class="inputContent">￥8.08</td>
+          <td colspan="2" align="left" class="inputContent"><font color="#CC0000">1</font></td>
+          		  </tr>
+            </table>
+			</form> 
+  </div>
+
+</div>
+	<div id="footer">
+		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
+		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
+	</div>
+</body>
+</html>

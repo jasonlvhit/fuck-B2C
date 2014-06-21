@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>BC2商城</title>
+<link href="{{ url_for('static', filename='web/css/frame.css') }}" rel="stylesheet" type="text/css"/>
+<script language="javascript" src="{{ url_for('static', filename='web/js/checkform.js') }}"></script>
+</head>
+
+<body>
+<div id="container">
+	<div id="logalleft">
+		<div id="logalright">
+		<a href="register.html" target="_parent">[注册]</a> &nbsp;| 
+		<a href="login.html" target="_parent">会员登录</a>
+		</div>
+	</div>
+	<div id="globallink">
+		<ul>
+			<li><a href="home.html">首页</a></li>
+			<li><a href="credit_query.html">积分查询</a></li>
+			<li><a href="item_search.html">商品搜索</a></li>
+			<li><a href="favorite.html">收藏夹</a></li>
+			<li><a href="cart_list.html">我的购物车</a></li>
+			<li><a href="tradequery.html">交易查询</a></li>
+			<li><a href="send_notes.html">送货说明</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+		</ul>
+	</div>
+	<div id="banner"></div>
+	<div id="main">
+		<div id="search2">
+			<div id="searchleft">
+				<img src="../image/ico_site.jpg"  id="ico_site"/>
+				网站路径：<a href="home.html">首页</a>&gt;&gt;<a href="">新用户注册</strong></a>
+			</div>
+			<div id="searchright2">
+			  <input type="text" name="product" id="textInput"/>
+			  <input type="button" name="Submit" value="搜索" id="searchbutton" onClick="javascript:window.open('item_search_list.html','_parent','')">
+			</div>
+			<div id="searchright1">
+			  <select name="category" id="searchrightcategory">
+				<option value="5">所有类别</option>
+                <option value="1">图书音像</option>
+                <option value="2">时尚生活</option>
+                <option value="3">饰品配件</option>
+                <option value="4">数码产品</option>
+              </select>
+		  </div>
+		</div>
+		<div id="sendnote">
+			<div id="sendnotehead"><strong>新用户注册</strong></div>
+			<div id="sendnotecontent">
+			<form action="" method="post" enctype="multipart/form-data" name="form1" onsubmit = "return checkregform()">
+				<table id="itemsearch">
+				   <tr>
+					<th class="itemsearchth" >请输入E-mail 地址：</th>
+            		<td class="itemsearchtd1">
+						<input type="text" name="email" class="inputtext"/>
+					</td>
+					<td class="itemsearchtd2">
+						<span class="red">*&nbsp;必输项	</span>				</td>
+          		 </tr>
+				 <tr>
+				 <th class="itemsearchth">请输入昵称：</th>
+            		<td class="itemsearchtd1">
+						<input type="text" name="username" class="inputtext"/>
+					</td>
+					<td class="itemsearchtd2">
+						<span class="red">&nbsp;(可选项)	</span>
+					</td>
+          		 </tr>
+				 <tr>
+				 <th class="itemsearchth">登录密码：</th>
+            		<td class="itemsearchtd1">
+					  	<input type="Password" name="password" class="inputtext"/>
+					</td>
+					<td class="itemsearchtd2">
+					<span class="red">*&nbsp;必输项	</span>
+					</td>
+          		 </tr>
+				 <tr>
+				 <th class="itemsearchth">密码确认：</th>
+            		<td class="itemsearchtd1">
+					<input type="Password" name="passwordConfirm" class="inputtext"/>
+					</td>
+					<td class="itemsearchtd2">
+					<span class="red">*&nbsp;必输项	</span>
+					</td>
+          		 </tr>
+				 <tr>
+				 <th></th>
+				 	<td><input type="submit" class="bt2" name="button2" value="提交">
+						&nbsp;<input type="Reset" class="bt2" name="button1" value="重填" onClick="clear()">
+						&nbsp;<input type="Button" class="bt2" name="button3" value="返回" >
+					</td>
+				 </tr>
+        </table>
+		</form>		
+			</div>
+		</div>
+		
+	<div id="footer">
+		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
+		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
+	</div>
+</div>
+
+</body>
+</html>

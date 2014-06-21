@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>BC2商城</title>
+<link href="{{ url_for('static', filename='back/css/frame.css') }}" rel="stylesheet" type="text/css">
+<script language="javascript">
+function clear(){
+
+document.form1.webUserEntity.name="";
+document.form1.webUserEntity.address="";
+document.form1.webUserEntity.postcode="";
+document.form1.webUserEntity.phone="";
+}
+</script>
+   </head>
+
+<body>
+<div id="container">
+	<div id="logalleft">
+		<div id="logalright">
+		<a href="" target="_parent">管理员 已登录|</a>
+	 	<a href="home.html" target="_parent">退出</a>
+		</div>
+	</div>
+	<div id="globallink">
+		<ul>
+			<li><a href="home.html">首页</a></li>
+			<li><a href="category_list.html">商品管理</a></li>
+			<li><a href="order_admin.html">订单管理</a></li>
+			<li><a href="salesdata_admin.html">销售量统计</a></li>
+			<li><a href="user_admin.html">会员管理</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+		</ul>
+	</div>
+	<div id="banner"></div>
+	<div id="main">
+		<div id="search2">
+			<div id="searchleft">
+				<img src="../image/ico_site.jpg" id="ico_site"/>
+				网站路径：库存管理
+			</div>
+		</div>
+		<div id="sendnote">
+			<div id="sendnotehead"><strong>商品目录</strong></div>
+		  <div id="sendnotecontent">
+		    <table width="100%">
+              <tr>
+                <td colspan="2" rowspan="3" align="center" class="inputHeader"><label></label>
+                  <a href="item_list.html"><img src="../image/tsyx.gif" alt="图书音像" width="85" height="70" border="0" /></a></td>
+                <td width="92%" colspan="3" align="left" class="inputHeader"><span class="red">&nbsp;&nbsp;图书音像</span></td>
+              </tr>
+              <tr>
+                <td colspan="3" align="left" class="inputHeader">&nbsp;
+                    <input type="button" name="itemlist" value="显示商品库存信息" class="bt7" onClick="javascript:window.location.href='storage_list.html'"></td>
+              </tr>
+              <tr>
+                <td colspan="3" align="left" class="inputHeader"><label></label></td>
+              </tr>
+              <tr>
+                <td colspan="2" rowspan="3" align="center" class="inputHeader"><img src="../image/sssh.gif" alt="大学物理第2册" width="85" height="70" /></td>
+                <td colspan="3" align="left" class="inputHeader"><span class="red">&nbsp;&nbsp;时尚生活</span></td>
+              </tr>
+              <tr>
+                <td colspan="3" align="left" class="inputHeader">&nbsp;
+                   <input type="button" name="itemlist2" value="显示商品库存信息" class="bt7"></td>
+              </tr>
+              <tr>
+                <td colspan="3" align="left" class="inputHeader">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2" rowspan="3" align="center" class="inputHeader"><img src="../image/smcp.gif" alt="大学物理第1册" width="85" height="70" /></td>
+                <td colspan="3" align="left" class="inputHeader"><span class="red">&nbsp;&nbsp;数码产品</span> </td>
+              </tr>
+              <tr>
+                <td colspan="3" align="left" class="inputHeader">&nbsp;
+                    <input type="button" name="itemlist2" value="显示商品库存信息" class="bt7"></td>
+              </tr>
+              <tr>
+                <td colspan="3" align="left" class="inputHeader">&nbsp;</td>
+              </tr>
+  <td width="5%"></td>
+            </table>
+		  </div>
+		</div>
+		
+	<div id="footer">
+		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
+		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
+	</div>
+</div>
+
+</body>
+</html>

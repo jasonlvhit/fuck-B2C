@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>BC2商城</title>
+<link href="{{ url_for('static', filename='back/css/frame.css') }}" rel="stylesheet" type="text/css"/>
+<script language="javascript" src="{{ url_for('static', filename='back/js/checkform.js') }}">
+
+</script>
+
+</head>
+
+<body>
+<div id="container">
+	<div id="logalleft">
+		<div id="logalright">
+		<a href="" target="_parent">管理员 已登录|</a>
+	 	<a href="home.html" target="_parent">退出</a>
+		</div>
+	</div>
+	<div id="globallink">
+		<ul>
+			<li><a href="home.html">首页</a></li>
+			<li><a href="category_list.html">商品管理</a></li>
+			<li><a href="order_admin.html">订单管理</a></li>
+			<li><a href="salesdata_admin.html">销售量统计</a></li>
+			<li><a href="user_admin.html">会员管理</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+		</ul>
+	</div>
+	<div id="banner"></div>
+	<div id="main">
+		<div id="search2">
+			<div id="searchleft">
+				<img src="../image/ico_site.jpg"  id="ico_site"/>
+				网站路径：<a href="price_admin.html">价格管理</a>&gt;&gt;<a href="price_list.html">商品价格信息</a>&gt;&gt;价格编辑</a>
+			</div>
+		</div>
+		<div id="sendnote">
+			<div id="sendnotehead"><strong>编辑商品</strong></div>
+			<div id="sendnotecontent">
+			<form action="" method="post" enctype="multipart/form-data" name="form1">
+				<table id="itemsearch">
+				   <tr>
+					<th width="180">商品名称：</th>
+            		<td width="360">
+					 <input type="Text" class="inputttextlarge" name="name" onFocus="nextfield='name'" value="大学物理学.第四册：波动与光学（第2版）" maxlength="25" disabled="disabled"> </td>
+					 
+					 <td width="142"><span class="red"></span></td>
+          		 </tr>
+				  <tr>
+				 <th>市&nbsp;场&nbsp;价：</th>
+					<td><input type="text" name="price" class="smallinputext" value="10"></td>
+					<td><span class="red">*必输项</span></td>
+          		 </tr>
+				 <tr>
+				 <th>折&nbsp;&nbsp;&nbsp;&nbsp;扣：</th>
+				 <td>
+				 <input type="text" name="discount" class="smallinputext" value="0.85">				 </td>
+				  <td><span class="red">*必输项</span></td>
+				 </tr>
+				 <tr>
+				 <th></th>
+			 	  <td>
+				 <input type="Button" class="bt2" name="button2" value="提交" onClick="checkpriceform()">
+				 	<input type="Reset" name="button1" value="重填" onClick="clear()">
+				  <input type="Button" class="bt2" name="button22" value="返回" onClick="javascript:window.location.href='price_list.html'">			  </td> 
+				  <td></td>
+				  </tr>
+        </table>
+		</form>
+				
+			</div>
+		</div>
+		
+	<div id="footer">
+		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
+		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
+	</div>
+</div>
+
+</body>
+</html>

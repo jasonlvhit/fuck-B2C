@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>BC2商城</title>
+<link href="{{ url_for('static', filename='back/css/frame.css') }}" rel="stylesheet" type="text/css"/>
+<script language="javascript" src="{{ url_for('static', filename='back/js/checkform.js') }}">
+
+</script>
+</head>
+
+<body>
+<div id="container">
+	<div id="logalleft">
+		<div id="logalright">
+		<a href="" target="_parent">管理员 已登录|</a>
+	 	<a href="home.html" target="_parent">退出</a>
+		</div>
+	</div>
+	<div id="globallink">
+		<ul>
+			<li><a href="home.html">首页</a></li>
+			<li><a href="category_list.html">商品管理</a></li>
+			<li><a href="order_admin.html">订单管理</a></li>
+			<li><a href="salesdata_admin.html">销售量统计</a></li>
+			<li><a href="user_admin.html">会员管理</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
+		</ul>
+	</div>
+	<div id="banner"></div>
+	<div id="main">
+		<div id="search2">
+			<div id="searchleft">
+				<img src="../image/ico_site.jpg"  id="ico_site"/>
+				网站路径：<a href="order_admin.html">订单管理</a>&gt;&gt;<a href="order_list.html">订单查询结果</a>&gt;&gt;订单审核
+			</div>
+		</div>
+		<div id="sendnote">
+			<div id="sendnotehead"><strong>送货地址</strong></div>
+			<div id="sendnotecontent">
+				<table id="itemsearch">
+				   <tr>
+					<th>姓&nbsp;&nbsp;&nbsp;&nbsp;名：</th>
+            		<td>
+						张桐
+					</td>
+          		 </tr>
+				 <tr>
+				 <th>地&nbsp;&nbsp;&nbsp;&nbsp;址：</th>
+            		<td>
+						北京市海淀区翠微路甲5号
+					</td>
+          		 </tr>
+				 <tr>
+				 <th>电话号码：</th>
+            		<td>
+					13812345678
+					</td>
+          		 </tr>
+				 <tr>
+				 <th>支付方式：</th>
+            		<td>
+					货到付款
+					</td>
+          		 </tr>
+				 <tr>
+				 <th>送&nbsp;货&nbsp;费：</th>
+            		<td>
+					 <select>
+							<option value="5">5元</option>
+							<option value="10">10元</option>
+					</select></td>
+          		 </tr>
+				 <tr>
+				 <th></th>
+				 	<td> <input type="Button"  name="check" value="确定" onClick="checkordercheck()">
+				 </tr>
+        </table>
+				
+			</div>
+		</div>
+		
+	<div id="footer">
+		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
+		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
+	</div>
+</div>
+
+</body>
+</html>
