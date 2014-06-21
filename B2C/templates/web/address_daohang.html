@@ -11,9 +11,9 @@
 	<div id="logalleft">
 		<div id="logalright">
 		<a href="register.html" target="_parent">[注册&nbsp;</a>] | 
-		<a href="" target="_parent">王小静 已登录| 
+		<a href="" target="_parent">王小静 已登录| </a>
 		<a href="user_edit.html" target="_parent">个人信息维护</a> | 
-		<a href="address_daohang.html"" target="_parent">地址簿</a> |
+		<a href="address_daohang.html" target="_parent">地址簿</a> |
 	 	<a href="home_nologin.html" target="_parent">退出</a>
 		</div>
 	</div>
@@ -33,7 +33,7 @@
 	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
-				<img src="../image/ico_site.jpg"  id="ico_site"/>
+				<img src="{{ url_for('static', filename='web/image/ico_site.jpg') }}"  id="ico_site"/>
 				网站路径：<a href="home.html">首页</a>&gt;&gt;<a href=""> 地址簿</a>
 			</div>
 			<div id="searchright2">
@@ -57,35 +57,29 @@
 				<table id="doublecontenttable1">
 				<thead>
 					<tr>
-						<th></th>
 						<th>地址簿</th>
 						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
-				  <tr>
-					<td>
-						<input type="radio" name="radiobutton" value="radiobutton" checked="checked">
-					</td>		
+				{% for addr in address_list %}
+				  <tr>	
 					<td>
 					北京市海淀区翠微路甲5号
 					</td>
 					<td>
-					<a href="address_edit.html"><img src="../image/bt_change.gif"  class="picture"/></a>&nbsp;
-					<a href="#" onClick="javascript:confirm('确定删除？')"><img src="../image/bt_delete2.gif" class="picture"/></a>
+					<a href="address_edit.html"><img src="{{ url_for('static', filename='web/image/bt_change.gif') }}"  class="picture"/></a>&nbsp;
+					<a href="#" onClick="javascript:confirm('确定删除？')"><img src="{{ url_for('static', filename='web/image/bt_delete2.gif') }}" class="picture"/></a>
 					</td>	
           		  </tr>
 				  <tr>
+					<td>{{ addr }} </td>
 					<td>
-					<input type="radio" name="radiobutton" value="radiobutton">
+					<a href="address_edit.html"><img src="{{ url_for('static', filename='web/image/bt_change.gif') }}"  class="picture"/></a>&nbsp;
+					<a href="#" onClick="javascript:confirm('确定删除？')"><img src="{{ url_for('static', filename='web/image/bt_delete2.gif') }}" class="picture"/></a>
 					</td>
-					<td>
-					北京市朝阳区北四环中路229号海泰大厦</td>
-					<td>
-					<a href="address_edit.html"><img src="../image/bt_change.gif"  class="picture"/></a>&nbsp;
-					<a href="#" onClick="javascript:confirm('确定删除？')"><img src="../image/bt_delete2.gif" class="picture"/></a>
-					</td>
-				  </tr>
+					</tr>
+				{% endfor %}
 				 </tbody>
             </table>
 			</div>
@@ -93,7 +87,7 @@
 			<div id="double2">
 			<div id="doublehead2"><strong>添加地址簿</strong></div>
 			<div id="doublecontent2">
-			<form action="" method="post" enctype="multipart/form-data" name="form1">
+			<form action="" method="post" enctype="multipart/form-data" name="form1" onsubmit="return checkaddressdaohang()">
 				<table id="itemsearch">
 				   <tr>
 					<th class="itemsearchth" >姓&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;名：</th>
@@ -101,15 +95,16 @@
 					<input type="text" name="name" class="inputtext" onFocus="nextfield='password'" value="" maxlength="25"/>
 					</td>
 					<td class="itemsearchtd2">
-						<span class="red">*&nbsp;必输项<span class="red"></td>
+						<span class="red">*&nbsp;必输项</span>
+					</td>
           		 </tr>
 				 <tr>
 				 <th class="itemsearchth">本地/外地：</th>
             		<td class="itemsearchtd1">
 						<select name="province">
-                    		<option>请选择</option>
-                    		<option>本地</option>
-							<option>外地</option>                 
+             
+                    		<option value='1'>本地</option>
+							<option selected="true" value='0'>外地</option>                 
                   		</select>
 					</td>
 					<td class="itemsearchtd2">&nbsp;</td>
@@ -120,29 +115,29 @@
 				<input type="Text" class="inputtext" name="address" onFocus="nextfield='name'" value="" maxlength="25">
 					</td>
 					<td class="itemsearchtd2">
-						<span class="red">*&nbsp;必输项<span class="red"></td>
+						<span class="red">*&nbsp;必输项</span>
 					</td>
           		 </tr>
 				 <tr>
 				 <th class="itemsearchth"><span class="inputHeader">邮政编码：</span></th>
             		<td class="itemsearchtd1">
-					<input type="Text" class="inputtext" name="postcode" onFocus="nextfield='sex'" value="" maxlength="25">
+					<input type="Text" class="inputtext" name="postcode" onFocus="nextfield='postcode'" value="" maxlength="25">
 					</td>
 					<td class="itemsearchtd2">&nbsp;</td>
           		 </tr>
 				 <tr>
 				 <th class="itemsearchth"><span class="inputHeader">手机号码：</span></th>
             		<td class="itemsearchtd1">
-	              <input type="Text" class="inputtext" name="phone" onFocus="nextfield='sex'" value="" maxlength="25">
+	              <input type="Text" class="inputtext" name="phone" onFocus="nextfield='phone'" value="" maxlength="25">
 					</td>
 					<td class="itemsearchtd2">
-						<span class="red">*&nbsp;必输项<span class="red"></td>
+						<span class="red">*&nbsp;必输项</span>
 					</td>
           		 </tr>
 				 <tr>
 				 <th></th>
 				 	<td>
-					<input type="Button" class="bt2" name="button2" value="提交" onClick="checkaddressdaohang()">
+					<input type="submit" class="bt2" name="button2" value="提交">
 						&nbsp;<input type="Reset" class="bt2" name="button1" value="重填" onClick="clear()">
 					</td>
 				 </tr>
@@ -155,5 +150,6 @@
 		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
 		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
 	</div>
+</div>
 </body>
 </html>

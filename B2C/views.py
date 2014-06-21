@@ -37,14 +37,28 @@ def index():
     return render_template("web/home.html")
 
 @login_required
-@app.route("/add_adress")
+@app.route("/add_address", methods = ['GET', 'POST'])
 def add_address():
-    pass
+    if request.method == 'GET':
+        pass
+        # Query database for address entry
+    if request.method == 'POST':
+        rc_name = request.form['name']
+        addr_name = request.form['address']
+        phone = request.form['phone']
+        zipcode = request.form['postcode']
+        is_local = True and request.form['province'] == '1' or False
+        # Add new address entry
+        a = Address(rc_name, addr_name, phone, zipcode, is_local=is_local)
+        db.session.add(a)
+        db.session.commit()
+
+    return render_template('web/address_daohang.html')
 
 @login_required
 @app.route("/edit_address")
 def edit_address():
-    pass
+    return render_template('web/address_edit.html')
 
 @login_required
 @app.route("/delete_address")

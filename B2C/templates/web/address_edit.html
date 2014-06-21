@@ -11,9 +11,9 @@
 	<div id="logalleft">
 		<div id="logalright">
 		<a href="register.html" target="_parent">[注册&nbsp;</a>] | 
-		<a href="" target="_parent">王小静 已登录| 
+		<a href="" target="_parent">王小静 已登录| </a>
 		<a href="user_edit.html" target="_parent">个人信息维护</a> | 
-		<a href="address_daohang.html"" target="_parent">地址簿</a> |
+		<a href="address_daohang.html" target="_parent">地址簿</a> |
 	 	<a href="home_nologin.html" target="_parent">退出</a>
 		</div>
 	</div>
@@ -33,7 +33,7 @@
 	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
-				<img src="../image/ico_site.jpg"  id="ico_site"/>
+				<img src="{{ url_for('static', filename='web/image/ico_site.jpg') }}"  id="ico_site"/>
 				网站路径：<a href="home.html">首页</a>&gt;&gt;<a href="address.html"> 地址簿</a>&gt;&gt;<a href=""> 地址簿编辑</a>
 			</div>
 			<div id="searchright2">
@@ -55,7 +55,7 @@
 			<div id="sendnotehead"><strong> 编辑地址簿</strong></div>
 			<div id="sendnotecontent">
 
-			<form action="" method="post" enctype="multipart/form-data" name="form1">
+			<form action="" method="post" enctype="multipart/form-data" name="form1" onsubmit=" return checkaddressform()">
 				<table id="itemsearch">
 				   <tr>
 					<th class="itemsearchth" >姓&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;名：</th>
@@ -68,10 +68,9 @@
 				 <tr>
 				 <th class="itemsearchth">本地/外地：</th>
             		<td class="itemsearchtd1">
-						<select name="province">
-                    		<option>请选择</option>
-                    		<option>本地</option>
-							<option>外地</option>                 
+						<select name="province">              
+                    		<option value='1'>本地</option>
+							<option value='0'>外地</option>                 
                   		</select>
 					</td>
 					<td class="itemsearchtd2">&nbsp;</td>
@@ -103,7 +102,7 @@
           		 </tr>
 				 <tr>
 				 <th></th>
-				 	<td><input type="Button" class="bt2" name="button2" value="提交" onClick="checkaddressform()">
+				 	<td><input type="Button" class="bt2" name="button2" value="提交">
 						&nbsp;<input type="Reset" class="bt2" name="button1" value="重填" onClick="clear()">
 						&nbsp;<input type="Button" class="bt2" name="button3" value="返回" onClick="javascript:window.location.href='address.html'">
 					</td>
