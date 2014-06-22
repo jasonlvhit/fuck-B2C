@@ -1,6 +1,7 @@
 from B2C import db
 
 order_item_re = db.Table('order_items',
+	db.Column('id', db.Integer, primary_key = True),
 	db.Column('item_id', db.Integer, db.ForeignKey('item.id')),
 	db.Column('order_id', db.Integer, db.ForeignKey('order.id'))
 	)
@@ -101,6 +102,9 @@ class Item(db.Model):
 		self.vipcount = vipcount
 		self.count = count
 
+	def consume(self, num = 0):
+		self.count = self.count - num
+
 	def __repr__(self):
 		return '<Item %r>' %self.item_name
 
@@ -118,6 +122,59 @@ class Comment(db.Model):
 		self.title= title
 		self.content = content
 		self.item_id = item_id
+
+	def __repr__(self):
+		pass
+
+class Directory(db.Model):
+	__tablename__= 'directory'
+	id = db.Column(db.Integer, primary_key = True)
+	dir_name = db.Column(db.String(80))
+	description = db.Column(db.Text)
+	image_path = db.Column(db.String(100))
+
+	parent_id = db.Column(db.Integer, db.ForeignKey('top_dir.id'))
+
+	def __init__(self, dir_name, description = '', image_path = '', parents = None):
+		self.dir_name = dir_name
+		self.description = description
+		self.image_path = image_path
+		self.parents = parents
+
+	def __repr__(self):
+		pass
+
+class TopDirectory(db.Model):
+	__tablename__ = 'top_dir'
+	id = db.Column(db.Integer, primary_key = True)
+	dir_name = db.Column(db.String(80))
+	description = db.Column(db.String(100))
+	image_path = db.Column(db.String(100))
+
+	kids = db.relationship('Directory', backref = 'user', lazy = 'dynamic')
+
+	def __init__(self, dir_name, description = '', image_path = ''):
+		self.dir_name = dir_name
+		self.description = description
+		self.image_path = image_path
+
+	def __repr__():
+		pass
+
+class Admin(db.Model):
+	__tablename__ = 'admin'
+	id = db.Column(db.Integer, primary_key= True)
+	admin_name = db.Column(db.String(100))
+	pw_hash = db.Column(db.Text)
+
+	def __init__(self, admin_name, pw_hash):
+		self.admin_name = admin_name
+		self.pw_hash = pw_hash
+
+	def __repr__(self):
+		pass
+
+
 
 
 

@@ -1,21 +1,17 @@
-from werkzeug import check_password_hash, generate_password_hash
+import os
+from datetime import datetime
+from functools import wraps
+from werkzeug import check_password_hash, generate_password_hash, secure_filename
 from flask import Flask , g, url_for, redirect,flash, render_template, session, _app_ctx_stack,request
 
-from datetime import datetime
-
 from B2C import db, app
-#models
-from models import User, Comment, Item, Address, Order
-
-#docra login_required
-from functools import wraps
+from models import User, Comment, Item, Address, Order, Directory, TopDirectory, Admin
 
 @app.before_request
 def before_request():
     g.user = None
     if 'user_id' in session:
         g.user = User.query.filter_by(id = session['user_id']).first()
-
 
 @app.teardown_request
 def shutdown_session(exception=None):
@@ -119,4 +115,46 @@ def register():
 @app.route("/edit_profile")
 def edit_profie():
     pass
+
+#fuck fuck fuck ...............................
+@app.route('/edit_dir', methods = ['GET', 'POST'])
+def edit_dir():
+    error = None
+    if request.method == 'POST':
+        pass
+    return render_template('back/category_list.html', error = error)
+
+@app.route('/add_dir', methods = ['POST', 'GET'])
+def add_dir(origin_info_set = None):
+    if request.method == 'POST':
+        top_level = False
+
+        file = request.files['file']
+        path = ''
+        if file.filename:
+            filename = secure_filename(file.filename)
+            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(path)
+
+        if request.form['parent'] == '':
+            request.form['parent'] = None
+            d = TopDirectory(request.form['name'], request.form['description'], \
+                path)
+            db.session.add(d)
+        else:
+            d = Directory(request.form['name'], request.form['description'], \
+                path, request.form['parent'])
+            parents = TopDirectory.query().filter_by(id = request.form['parent']).first()
+            db.session.add(d)
+            parents.kid.append(d)
+
+        db.session.commit()
+
+    return render_template('/back/category_edit.html', origin = origin_info_set, top_level = TopDirectory.query.all())
+        
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+    
 
