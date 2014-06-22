@@ -35,31 +35,50 @@ def index():
 @login_required
 @app.route("/add_address", methods = ['GET', 'POST'])
 def add_address():
-    if request.method == 'GET':
-        pass
-        # Query database for address entry
     if request.method == 'POST':
         rc_name = request.form['name']
         addr_name = request.form['address']
         phone = request.form['phone']
         zipcode = request.form['postcode']
         is_local = True and request.form['province'] == '1' or False
-        # Add new address entry
-        a = Address(rc_name, addr_name, phone, zipcode, is_local=is_local)
-        db.session.add(a)
-        db.session.commit()
+        if request.form['update'] == '1':
+            # Do update
+            a = Address.query.get(request.form['id'])
+            a.reciver_name = rc_name
+            a.address_name = addr_name
+            a.phone = phone
+            a.zipcode = zipcode
+            a.is_local = is_local
+            db.session.commit()
+        else:
+            # Do insert
+            a = Address(rc_name, addr_name, phone, zipcode, is_local=is_local)
+            db.session.add(a)
+            db.session.commit()
 
-    return render_template('web/address_daohang.html')
+    # Query database for address entries
+    address_list = Address.query.all()
+    return render_template('web/address_daohang.html', address_list = address_list)
 
 @login_required
-@app.route("/edit_address")
+@app.route("/edit_address", methods = ['GET'])
 def edit_address():
-    return render_template('web/address_edit.html')
+    address_id = request.args.get('id')
+    address = Address.query.filter_by(id=address_id).first();
+
+    return render_template('web/address_edit.html', address = address)
 
 @login_required
 @app.route("/delete_address")
 def delete_address():
-    pass
+    address_id = request.args.get('id')
+
+    a = Address.query.get(address_id)
+    db.session.delete(a)
+    db.session.commit()
+
+    # Query database for all address entries
+    return redirect(url_for('add_address'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
