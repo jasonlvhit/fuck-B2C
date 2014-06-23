@@ -191,3 +191,30 @@ class Admin(db.Model):
 
     def __repr__(self):
         pass
+        
+        
+class CreditRequirement(db.Model):
+	__tablename__ = 'credit_limit'
+	id = db.Column(db.Integer, primary_key = True)
+	normal = db.Column(db.Integer)
+	silver = db.Column(db.Integer)
+	gold = db.Column(db.Integer)
+	pt = db.Column(db.Integer)
+
+	normal_percent = db.Column(db.Integer)
+	silver_percent = db.Column(db.Integer)
+	gold_percent = db.Column(db.Integer)
+	pt_percent = db.Column(db.Integer)
+	
+	def __init__(self, normal, silver, gold, pt, normal_percent, silver_percent, gold_percent, pt_percent):
+		self.normal = normal
+		self.silver = silver
+		self.gold = gold
+		self.pt = pt
+		self.normal_percent = normal_percent
+		self.silver_percent = silver_percent
+		self.gold_percent = gold_percent
+		self.pt_percent = pt_percent
+
+	def __repr__(self):
+		pass
