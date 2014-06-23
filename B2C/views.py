@@ -244,7 +244,7 @@ def edit_dir():
     return render_template('back/category_list.html', error=error,top_level=TopDirectory.query.all(), count=0)
 
 @app.route('/add_dir', methods=['POST', 'GET'])
-def add_dir(origin_info_set=None, top = False):
+def add_dir(origin_info_set='{}', top = False):
     if request.method == 'POST':
         top_level = False
         '''
@@ -281,7 +281,8 @@ def add_dir(origin_info_set=None, top = False):
             parents.kids.append(d)
 
         db.session.commit()
-    origin_info_set = request.args['origin_info_set']
+    if 'origin_info_set' in request.args:
+        origin_info_set = request.args['origin_info_set']
     return render_template('/back/category_edit.html', origin_info_set=eval(origin_info_set), top_level=TopDirectory.query.all())
 
 
