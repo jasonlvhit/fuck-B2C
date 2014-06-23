@@ -398,5 +398,9 @@ def remove_item(id):
     db.session.commit()
     return redirect(url_for('item_list', cate_id = cate_id))
 
+@app.route('/comments_list', methods = ['POST', 'GET'])
+def comments_list():
+    pass
+
     
 

@@ -8,6 +8,13 @@ order_item_re = db.Table('order_items',
                              'order_id', db.Integer, db.ForeignKey('order.id'))
                          )
 
+user_collection_re = db.Table('collection', 
+    db.Column('id', db.Integer, primary_key = True),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.COlumn('item_id', db.Integer, db.ForeignKey('item.id')),
+    db.Column('date', db.DateTime)
+    )
+
 
 class User(db.Model):
 
@@ -26,6 +33,8 @@ class User(db.Model):
 
     # order
     orders = db.relationship('Order', backref='user', lazy='dynamic')
+    comments = db.relationship('Comment', backref = 'user', lazy = 'dynamic')
+    collections = db.relationship('Item', secondary=user_collection_re, backref=db.backref('user', lazy='dynamic'))
 
     def __init__(self, username, email, pw_hash, consumption=0, points=0):
         self.username = username
@@ -129,6 +138,7 @@ class Comment(db.Model):
     content = db.Column(db.Text)
 
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
+    user_id = db.COlumn(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, rate, title, content, item_id):
         self.rate = rate
