@@ -9,12 +9,11 @@
 <div id="container">
 	<div id="logalleft">
 		<div id="logalright">
-		
 		{% if g.user %} 
-		  <a href="" target="_parent">{{ g.user.username }} 已登录|
-		  <a href="logout" target="_parent">退出</a>|
-		  <a href="user_edit.html" target="_parent">个人信息维护</a> |
-		  <a href="address_daohang.html" target="_parent">地址簿</a> |
+		  <span style="font-size:12px;" target="_parent">{{ g.user.username }} 已登录|</span>
+		  <a href="/logout" target="_parent">退出</a>|
+		  <a href="/edit_profile" target="_parent">个人信息维护</a> |
+		  <a href="/add_address" target="_parent">地址簿</a> |
 		{% else %}
 		 <a href="/register" target="_parent">[注册&nbsp;</a>] |
 		 <a href="/login" target="_parent"> Login &nbsp;</a>] |
