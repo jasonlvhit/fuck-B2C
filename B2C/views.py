@@ -291,3 +291,44 @@ def add_dir(origin_info_set='{}', top = False):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+
+@app.route('/item_list/<int:cate_id>')
+def item_list(cate_id):
+    items = Item.query.filter_by(cate_id = cate_id).all()
+    return render_template("back/item_list.html", items = items, cate_id = cate_id)
+
+@app.route('/add_item', methods = ['POST'])
+def add_item():
+    a = Item(request.form['name'], request.form['description'], request.form['price'], request.form['discount'], request.form['storage'], request.form['cate_id'])
+    cate = Directory.query.filter_by(id = request.form['cate_id']).first()
+    cate.items.append(a)
+    db.session.add(a)
+    db.session.commit()
+    return redirect(url_for('item_list', cate_id = request.form['cate_id']))
+
+@app.route('/edit_item/<int:id>', methods = ['GET', 'POST'])
+def edit_item(id):
+    if request.method == 'POST':
+        i = Item.query.filter_by(id = id).first()
+        i.item_name = request.form['name']
+        i.price = request.form['price']
+        i.description = request.form['desc']
+        i.discount = request.form['discount']
+        i.count = request.form['count']
+        db.session.commit()
+        return redirect(url_for('item_list', cate_id = i.cate_id))
+    i = Item.query.filter_by(id = id).first()
+    return render_template('back/item_edit.html', item = i)
+
+@app.route('/remove_item/<int:id>', methods = ['GET'])
+def remove_item(id):
+    assert request.method == 'GET'
+    i = Item.query.filter_by(id = id).first()
+    cate_id = i.cate_id
+    db.session.delete(i)
+    db.session.commit()
+    return redirect(url_for('item_list', cate_id = cate_id))
+
+    
+

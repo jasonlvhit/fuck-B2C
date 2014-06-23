@@ -95,20 +95,24 @@ class Item(db.Model):
     __tablename__ = 'item'
     id = db.Column(db.Integer, primary_key=True)
     item_name = db.Column(db.String, unique=False)
+    description = db.Column(db.Text, unique = False)
     image = db.Column(db.Text)  # file path
     price = db.Column(db.Float)
     discount = db.Column(db.Float)
-    vip_price = db.Column(db.Float)
     count = db.Column(db.Integer)
 
     comments = db.relationship('Comment', backref='item', lazy='dynamic')
 
-    def __init__(self, item_name, price, vipcount, discount=1.0, count=0):
+    cate_id = db.Column(db.Integer, db.ForeignKey('directory.id'))
+
+    def __init__(self, item_name, description, price, discount=1.0, count=0, cate_id = 0):
         self.item_name = item_name
+        self.description = description
         self.price = price
         self.discount = discount
-        self.vipcount = vipcount
         self.count = count
+        self.cate_id = cate_id
+
 
     def consume(self, num=0):
         self.count = self.count - num
@@ -144,6 +148,8 @@ class Directory(db.Model):
     image_path = db.Column(db.String(100))
 
     parent_id = db.Column(db.Integer, db.ForeignKey('top_dir.id'))
+
+    items = db.relationship('Item', backref='directory', lazy='dynamic')
 
     def __init__(self, dir_name, description='', image_path='', parent_id=None):
         self.dir_name = dir_name

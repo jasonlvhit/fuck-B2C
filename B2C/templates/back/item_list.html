@@ -38,52 +38,30 @@
 		<div id="double1">
 			<div id="doublehead1"><strong>商品列表</strong></div>
 			<div id="doublecontent1">
-			<form action="" method="post" enctype="multipart/form-data" name="form1">
+			<form action="{{ url_for('add_item') }}" method="post"  name="form1"  onsubmit = "return checkitemform()">
 				<table id="xialabiao">
 				<tr>
-				<td width="7%" rowspan="4" align="center"><span class="red">1</span></td>
-            <td width="16%" rowspan="4" align="right" class="inputHeader"><a href="item_info.html"><img src="../image/dxwl4.jpg" alt="大学物理第4册" width="69" height="100" border="0"></a></td>
-			<td width="77%" align="left" class="inputHeader"><span class="red">大学物理学.第四册：波动与光学（第2版）</span></font></td>
-			</tr>
-          <tr>
-            <td align="left" class="inputHeader">市场价：￥10.00</td>
-          </tr>
-          <tr>
-            <td align="left" class="inputHeader">会员价：￥8.50</td>
-          </tr>
-          <tr>
-            <td align="left" class="inputHeader"><a href="item_edit.html"><img src="../image/bt_change.gif" alt="修改" width="37" height="19" border="0"></a>&nbsp;&nbsp;
-		<a href="item_list_refresh.html"  onClick="javascript:if(window.confirm('确定删除？')) window.location.href='item_list_refresh.html';else return false;"><img src="../image/bt_delete.gif" alt="删除" width="37" height="19" border="0"></a></td>
-          </tr>
+		{% for i in items %}
+				
 		  
           <tr>
-            <td width="7%" rowspan="4" align="center"><span class="red">2</span></td>
-             <td width="16%" rowspan="4" align="center" class="inputHeader"><img src="../image/dxwl2.jpg" alt="大学物理第2册" width="70" height="100"></td>
-			<td align="left" class="inputHeader"><span class="red">大学物理学.第二册：热学（第2版）</span></font></td>
+            <td width="7%" rowspan="4" align="center"><span class="red">{{ items.index(i) }}</span></td>
+            <!--<td width="16%" rowspan="4" align="center" class="inputHeader"><img src="../image/dxwl2.jpg" alt="大学物理第2册" width="70" height="100"></td>
+			-->
+			<td align="left" class="inputHeader"><span class="red">{{ i.item_name }}</span></font></td>
 			</tr>
           <tr>
-            <td align="left" class="inputHeader">市场价：￥9.50</td>
+            <td align="left" class="inputHeader">市场价：{{ i.price }}</td>
           </tr>
           <tr>
-            <td align="left" class="inputHeader">会员价：￥8.08</td>
+            <td align="left" class="inputHeader">会员价：{{ i.price * i.discount }}</td>
           </tr>
           <tr>
-            <td align="left" class="inputHeader"><img src="../image/bt_change.gif" alt="修改" width="37" height="19" border="0">&nbsp;&nbsp; <img src="../image/bt_delete.gif" alt="删除" width="37" height="19" border="0"></td>
+            <td align="left" class="inputHeader"><a href="{{ url_for('edit_item', id = i.id ) }}"><img src="{{ url_for('static', filename = 'back/image/bt_change.gif') }}" alt="修改" width="37" height="19" border="0"></a>&nbsp;&nbsp;
+		<a href="{{ url_for('remove_item', id = i.id) }}" ><img src="{{ url_for('static', filename = 'back/image/bt_delete.gif') }}" alt="删除" width="37" height="19" border="0"></a></td>
           </tr>
-           <tr>
-            <td width="7%" rowspan="4" align="center"><span class="red">3</span></td>
-             <td width="16%" rowspan="4" align="center" class="inputHeader"><img src="../image/dxwl1.jpg" alt="大学物理第1册" width="68" height="100"></td>
-			 <td align="left" class="inputHeader"><span class="red">大学物理学.第一册：力学（第2版）</span></td>
-           </tr>
-           <tr>
-             <td align="left" class="inputHeader">市场价：￥16.00</td>
-             </tr>
-           <tr>
-             <td align="left" class="inputHeader">会员价：￥13.60</td>
-             </tr>
-           <tr>
-             <td align="left" class="inputHeader"><img src="../image/bt_change.gif" alt="修改" width="37" height="19" border="0">&nbsp;&nbsp;<img src="../image/bt_delete.gif" alt="删除" width="37" height="19" border="0"> </td>
-				</tr>
+
+          {% endfor %}
             </table>
 			</div>
 			</div>
@@ -103,15 +81,18 @@
           		 </tr>
 				 <tr>
 				 <th>商品描述：</th>
-				 <td><textarea name="desc" class="textAreaStyle"></textarea></td>
+				 <td><textarea name="description" class="textAreaStyle"></textarea></td>
 				 <td></td>
           		 </tr>
+          		 <input type="text" name="cate_id" value="{{ cate_id }}"  style="display:none;"/>
 				 <tr>
+				 <!--
 				 <th><span class="inputHeader">商品图片：</span></th>
 					<td>
          	 	    <input type="file" name="pic">&nbsp;<input type="submit" name="Submit" value="上传"></td>
 					<td></td>
           		 </tr>
+          		-->
 				  <tr>
 				 <th>市场价：</th>
 					<td><input type="text" name="price" class="smallinputext" value=""></td>
@@ -131,7 +112,7 @@
 				 <tr>
 				 <th></th>
 			 	  <td>
-				 <input type="Button" name="button2" value="添加" onClick="checkitemform()">
+				 <input type="submit" name="button2" value="添加">
 				 <input type="Reset" name="button1" value="重填" onClick="clear()">
 				  </td> 
 				  <td></td>
