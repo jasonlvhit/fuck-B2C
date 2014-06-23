@@ -189,7 +189,7 @@ function checkpwdform() {
 		return false;
 
 	} else {
-		window.alert("密码已发送到您的邮箱，请查收！");
+		//window.alert("密码已发送到您的邮箱，请查收！");
 		return true;
 	}
 
