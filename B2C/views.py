@@ -1,11 +1,15 @@
 import sys
+import random
+import smtplib
+import email.utils
+from email.mime.text import MIMEText
 from datetime import datetime
 from functools import wraps
 from werkzeug import check_password_hash, generate_password_hash, secure_filename
 from flask import Flask, g, url_for, redirect, flash, render_template, session, _app_ctx_stack, request
 
 from B2C import db, app
-from models import User, Comment, Item, Address, Order, Directory, TopDirectory, Admin
+from models import User, Comment, Item, Address, Order, Directory, TopDirectory, Admin, CreditRequirement
 
 
 @app.before_request
@@ -84,47 +88,57 @@ def item_search():
 def item_info(id):
     return render_template('web/item_info.html', item = Item.query.filter_by(id = id).first())
 
+# Address related functions
+@app.route("/add_address", methods=['GET'])
 @login_required
-@app.route("/add_address", methods=['GET', 'POST'])
 def add_address():
-    if request.method == 'POST':
-        rc_name = request.form['name']
-        addr_name = request.form['address']
-        phone = request.form['phone']
-        zipcode = request.form['postcode']
-        is_local = True and request.form['province'] == '1' or False
-        if request.form['update'] == '1':
-            # Do update
-            a = Address.query.get(request.form['id'])
-            a.reciver_name = rc_name
-            a.address_name = addr_name
-            a.phone = phone
-            a.zipcode = zipcode
-            a.is_local = is_local
-            db.session.commit()
-        else:
-            # Do insert
-            a = Address(rc_name, addr_name, phone, zipcode, is_local=is_local)
-            db.session.add(a)
-            g.user.address.append(a)
-            db.session.commit()
-
     # Query database for address entries
     address_list = Address.query.filter_by(user_id=session['user_id'])
     return render_template('web/address_daohang.html', address_list=address_list)
 
+@app.route("/do_add_address", methods=['POST'])
+def do_add_address():
+    rc_name = request.form['name']
+    addr_name = request.form['address']
+    phone = request.form['phone']
+    zipcode = request.form['postcode']
+    is_local = True and request.form['province'] == '1' or False
 
-@login_required
+    a = Address(rc_name, addr_name, phone, zipcode, is_local=is_local)
+    db.session.add(a)
+    g.user.address.append(a)
+    db.session.commit()
+    return redirect("/add_address")
+
+@app.route("/do_update_address", methods=['POST'])
+def do_update_address():
+    rc_name = request.form['name']
+    addr_name = request.form['address']
+    phone = request.form['phone']
+    zipcode = request.form['postcode']
+    is_local = True and request.form['province'] == '1' or False
+
+    a = Address.query.get(request.form['id'])
+    a.reciver_name = rc_name
+    a.address_name = addr_name
+    a.phone = phone
+    a.zipcode = zipcode
+    a.is_local = is_local
+    db.session.commit()
+    return redirect('/add_address')
+
 @app.route("/edit_address", methods=['GET'])
+@login_required
 def edit_address():
     address_id = request.args.get('id')
+    if not address_id:
+        return redirect('add_address')
     address = Address.query.filter_by(id=address_id).first()
 
     return render_template('web/address_edit.html', address=address)
 
-
-@login_required
 @app.route("/delete_address")
+@login_required
 def delete_address():
     address_id = request.args.get('id')
 
@@ -135,7 +149,7 @@ def delete_address():
     # Query database for all address entries
     return redirect(url_for('add_address'))
 
-
+# User register, login and logout
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """Logs the user in."""
@@ -189,34 +203,38 @@ def register():
             return redirect(url_for('login'))
     return render_template('web/register.html', error=error)
 
-
-
-@app.route("/edit_profile", methods=['GET', 'POST'])
+# User profile and password related functions
+@app.route("/edit_profile", methods=['GET'])
 @login_required
 def edit_profie():
-    if request.method == 'POST':
-        if not check_password_hash(g.user.pw_hash, request.form['passwordold']):
-            flash("Origin password incorrect!")
-            return redirect('edit_profile')
-        # nickname not none then change it
-        if request.form['name'] != "":
-            g.user.username = request.form['name']
-        g.user.pw_hash = generate_password_hash(request.form['passwordnew'])
-        db.session.commit()
-        flash("Success!")
-
     return render_template('web/user_edit.html')
 
-@app.route("/find_password", methods=['GET', 'POST'])
-def find_password():
-    if request.method == 'POST':
-        email_address = request.form['email']
-        new_password = str(random.randint(100000, 999999))
-        g.user.pw_hash = generate_password_hash(new_password)
-        send_email(email_address, "Retrive Password", "Your new password is " + new_password)
-        flash("Mail sent!")
+@app.route("/do_edit_profile", methods=['POST'])
+def do_edit_profile():
+    if not check_password_hash(g.user.pw_hash, request.form['passwordold']):
+        flash("Origin password incorrect!")
+        return redirect('edit_profile')
+    # nickname not none then change it
+    if request.form['name'] != "":
+        g.user.username = request.form['name']
+    g.user.pw_hash = generate_password_hash(request.form['passwordnew'])
+    db.session.commit()
+    flash("Success!")
+    return redirect('/edit_profile')
 
+@app.route("/find_password", methods=['GET'])
+def find_password():
     return render_template('web/pwd_find.html')
+
+@app.route('/do_find_password', methods=['POST'])
+def do_find_password():
+    email_address = request.form['email']
+    new_password = str(random.randint(100000, 999999))
+    g.user.pw_hash = generate_password_hash(new_password)
+    send_email(email_address, "Retrive Password", "Your new password is " + new_password)
+    flash("Mail sent!")
+
+    return redirect('/find_password')
 
 def send_email(to_email_address, subject, text):
     msg = MIMEText(text)
@@ -239,26 +257,30 @@ def send_email(to_email_address, subject, text):
 def query_credit():
     return render_template("web/credit_query.html")
 
+# Manager user credit settings(Really? WTF?!)
 @app.route("/manage_user", methods=['GET', 'POST'])
 def manage_user():
     credit_req = CreditRequirement.query.get(0)
-    if request.method == 'POST':
-        if request.form['userlevel'] == '1':
-            credit_req.normal = request.form['credit']
-            credit_req.normal_percent = request.form['ratio']
-        elif request.form['userlevel'] == '2':
-            credit_req.silver = request.form['credit']
-            credit_req.silver_percent = request.form['ratio']
-        elif request.form['userlevel'] == '3':
-            credit_req.gold = request.form['credit']
-            credit_req.gold_percent = request.form['ratio']
-        elif request.form['userlevel'] == '4':
-            credit_req.pt = request.form['credit']
-            credit_req.pt_percent = request.form['ratio']
-        db.session.commit()
-        return redirect('/manage_user')
-
+    
     return render_template('back/user_admin.html', credit_req=credit_req)
+
+@app.route("/do_manage_user", methods=['POST'])
+def do_manage_user():
+    credit_req = CreditRequirement.query.get(0)
+    if request.form['userlevel'] == '1':
+        credit_req.normal = request.form['credit']
+        credit_req.normal_percent = request.form['ratio']
+    elif request.form['userlevel'] == '2':
+        credit_req.silver = request.form['credit']
+        credit_req.silver_percent = request.form['ratio']
+    elif request.form['userlevel'] == '3':
+        credit_req.gold = request.form['credit']
+        credit_req.gold_percent = request.form['ratio']
+    elif request.form['userlevel'] == '4':
+        credit_req.pt = request.form['credit']
+        credit_req.pt_percent = request.form['ratio']
+    db.session.commit()
+    return redirect('/manage_user')
 
 # fuck fuck fuck ...............................
 
