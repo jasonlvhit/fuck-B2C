@@ -1,32 +1,22 @@
 {% extends "web/layout.html" %}
 {% block main %}
-<div id="banner"></div>
+
 <div id="main">
 	<div id="search2">
 		<div id="searchleft">
 			<img src="{{ url_for('static', filename='web/image/ico_site.jpg') }}"  id="ico_site"/>
 			网站路径：<a href="/">首页</a>&gt;&gt;<a href="/add_address"> 地址簿</a>&gt;&gt;<a href=""> 地址簿编辑</a>
 		</div>
-		<div id="searchright2">
-			<input type="text" name="product" id="textInput"/>
-			<input type="button" name="Submit" value="搜索" id="searchbutton" onClick="javascript:window.open('item_search_list.html','_parent','')">
-		</div>
-		<div id="searchright1">
-			<select name="category" id="searchrightcategory">
-				<option value="5">所有类别</option>
-				<option value="1">图书音像</option>
-				<option value="2">时尚生活</option>
-				<option value="3">饰品配件</option>
-				<option value="4">数码产品</option>
-			</select>
-		</div>
-	</div>
+		
+{% include 'web/quick_search.html' %} 
 </div>
+
+
 <div id="sendnote">
 	<div id="sendnotehead"><strong> 编辑地址簿</strong></div>
 	<div id="sendnotecontent">
 
-		<form action="/add_address" method="post" name="form1" onsubmit=" return checkaddressform()">
+		<form action="/do_update_address" method="post" name="form1" onsubmit=" return checkaddressform()">
 			<table id="itemsearch">
 				<tr>
 					<th class="itemsearchth" >姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</th>
@@ -60,7 +50,7 @@
 				<tr>
 					<th class="itemsearchth"><span class="inputHeader">邮政编码：</span></th>
 					<td class="itemsearchtd1">
-						<input type="Text" class="inputtext" name="postcode" onFocus="nextfield='sex'" value="{{ address.postcode }}" maxlength="25">
+						<input type="Text" class="inputtext" name="postcode" onFocus="nextfield='sex'" value="{{ address.zipcode }}" maxlength="25">
 					</td>
 					<td class="itemsearchtd2">&nbsp;
 					</td>

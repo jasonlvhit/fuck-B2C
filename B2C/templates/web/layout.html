@@ -8,6 +8,7 @@
 <body>
 	<div id="container">
 		<div id="logalleft">
+		<div id="logalright">
 		{% if g.user %} 
 		  <a href="" target="_parent">{{ g.user.username }} 已登录|
 		  <a href="logout" target="_parent">退出</a>|
@@ -17,6 +18,7 @@
 		 <a href="/register" target="_parent">[注册&nbsp;</a>] |
 		 <a href="/login" target="_parent"> Login &nbsp;</a>] |
 		{% endif %}
+		</div>
 		</div>
 		<div id="globallink">
 			<ul>

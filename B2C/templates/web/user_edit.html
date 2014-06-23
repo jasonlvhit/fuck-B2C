@@ -1,34 +1,22 @@
 {% extends 'web/layout.html' %}
 {% block main %}
-<div id="banner"></div>
+
 <div id="main">
 	<div id="search2">
 		<div id="searchleft">
 			<img src="{{ url_for('static', filename='web/image/ico_site.jpg') }}"  id="ico_site"/>
 			网站路径：<a href="/">首页</a>&gt;&gt;<a href="/edit_profile"> 个人信息维护</a>
 		</div>
-		<div id="searchright2">
-			<input type="text" name="product" id="textInput"/>
-			<input type="button" name="Submit" value="搜索" id="searchbutton" onClick="javascript:window.open('item_search_list.html','_parent','')">
-		</div>
-		<div id="searchright1">
-			<select name="category" id="searchrightcategory">
-				<option value="5">所有类别</option>
-				<option value="1">图书音像</option>
-				<option value="2">时尚生活</option>
-				<option value="3">饰品配件</option>
-				<option value="4">数码产品</option>
-			</select>
-		</div>
-
-	</div>
+		
+{% include 'web/quick_search.html' %} 
+</div>
 	<div id="sendnote">
 		<div id="sendnotehead"><strong> 个人信息修改</strong></div>
 		{% for message in get_flashed_messages() %}
 		<div class=flash>{{ message }}</div>
 		{% endfor %}
 		<div id="sendnotecontent">
-			<form action="/edit_profile" method="post" name="form1" onsubmit="return checkinfoeditform()">
+			<form action="/do_edit_profile" method="post" name="form1" onsubmit="return checkinfoeditform()">
 				<table id="itemsearch">
 					<tr>
 						<th class="itemsearchth" >E-mail地址：</th>
@@ -85,6 +73,4 @@
 			</form>		
 		</div>
 	</div>
-</div>
-
 {% endblock %}

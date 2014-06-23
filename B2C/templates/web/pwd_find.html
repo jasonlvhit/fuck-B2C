@@ -1,26 +1,16 @@
 {% extends 'web/layout.html' %}
 {% block main %}
-<div id="banner"></div>
+
 <div id="main">
 	<div id="search2">
 		<div id="searchleft">
 			<img src="{{ url_for('static', filename='web/image/ico_site.jpg') }}"  id="ico_site"/>
 			网站路径：<a href="/">首页</a>&gt;&gt;<a href="/find_password"> 找回密码</a>
 		</div>
-		<div id="searchright2">
-			<input type="text" name="product" id="textInput"/>
-			<input type="button" name="Submit" value="搜索" id="searchbutton" onClick="javascript:window.open('item_search_list.html','_parent','')">
-		</div>
-		<div id="searchright1">
-			<select name="category" id="searchrightcategory">
-				<option value="5">所有类别</option>
-				<option value="1">图书音像</option>
-				<option value="2">时尚生活</option>
-				<option value="3">饰品配件</option>
-				<option value="4">数码产品</option>
-			</select>
-		</div>
-	</div>
+		
+{% include 'web/quick_search.html' %} 
+</div>
+
 	<div id="sendnote">
 		<div id="sendnotehead"><strong> 找回密码</strong></div>
 		{% for message in get_flashed_messages() %}
@@ -28,7 +18,7 @@
 		{% endfor %}
 		<div id="sendnotecontent">
 
-			<form action="" method="post"  onsubmit="return checkpwdform()" name="form1">
+			<form action="/do_find_password" method="post"  onsubmit="return checkpwdform()" name="form1">
 				<table id="itemsearch">
 					<tr>
 						<th class="itemsearchth" >注册时填写的E-mail地址：</th>
@@ -43,6 +33,6 @@
 			</form>		
 		</div>
 	</div>
-</div>
+
 
 {% endblock %}
