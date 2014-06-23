@@ -143,8 +143,9 @@ def register():
     return render_template('web/register.html', error=error)
 
 
-@login_required
+
 @app.route("/edit_profile")
+@login_required
 def edit_profie():
     pass
 
@@ -154,39 +155,69 @@ def edit_profie():
 @app.route('/edit_dir', methods=['GET', 'POST'])
 def edit_dir():
     error = None
-    if request.method == 'POST':
-        pass
-    return render_template('back/category_list.html', error=error)
 
+    if request.method == 'POST':
+        if 'remove' in request.form:
+            if request.form['cate']:
+                a = TopDirectory.query.filter_by(id = request.form['cate']).first()
+                db.session.delete(a)
+                db.session.commit()
+                return redirect(url_for('edit_dir'))
+            assert request.form['kid_cate']
+            a = Directory.query.filter_by(id = request.form['kid_cate']).first()
+            db.session.delete(a)
+            db.session.commit()
+            return redirect(url_for('edit_dir'))
+            
+        if request.form['cate']:
+            a = TopDirectory.query.filter_by(id = request.form['cate']).first()
+            return redirect(url_for('add_dir', origin_info_set = a.as_dict(), top = True))
+        a = Directory.query.filter_by(id = request.form['kid_cate']).first()
+        return redirect(url_for('add_dir', origin_info_set = a.as_dict()))
+        
+        #return redirect(url_for("index"))
+    return render_template('back/category_list.html', error=error,top_level=TopDirectory.query.all(), count=0)
 
 @app.route('/add_dir', methods=['POST', 'GET'])
-def add_dir(origin_info_set=None):
+def add_dir(origin_info_set=None, top = False):
     if request.method == 'POST':
         top_level = False
-
+        '''
         file = request.files['file']
         path = ''
         if file.filename:
             filename = secure_filename(file.filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(path)
+        '''
+        if request.args['origin_info_set']:
+            o = eval(request.args['origin_info_set'])
+            if request.args['top']:
+                a = TopDirectory.query.filter_by(id = o['id']).first()
+            else:
+                a = Directory.query.filter_by(id = o['id']).first()
 
+            a.dir_name = request.form['name']
+            a.description = request.form['description']
+            db.session.commit()
+            return redirect(url_for('edit_dir'))
+
+        path = ''
         if request.form['parent'] == '':
-            request.form['parent'] = None
             d = TopDirectory(request.form['name'], request.form['description'],
                              path)
             db.session.add(d)
         else:
             d = Directory(request.form['name'], request.form['description'],
-                          path, request.form['parent'])
-            parents = TopDirectory.query().filter_by(
+                          path, int(request.form['parent']))
+            parents = TopDirectory.query.filter_by(
                 id=request.form['parent']).first()
             db.session.add(d)
-            parents.kid.append(d)
+            parents.kids.append(d)
 
         db.session.commit()
-
-    return render_template('/back/category_edit.html', origin=origin_info_set, top_level=TopDirectory.query.all())
+    origin_info_set = request.args['origin_info_set']
+    return render_template('/back/category_edit.html', origin_info_set=eval(origin_info_set), top_level=TopDirectory.query.all())
 
 
 def allowed_file(filename):

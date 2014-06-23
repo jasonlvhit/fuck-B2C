@@ -145,14 +145,17 @@ class Directory(db.Model):
 
     parent_id = db.Column(db.Integer, db.ForeignKey('top_dir.id'))
 
-    def __init__(self, dir_name, description='', image_path='', parents=None):
+    def __init__(self, dir_name, description='', image_path='', parent_id=None):
         self.dir_name = dir_name
         self.description = description
         self.image_path = image_path
-        self.parents = parents
+        self.parents_id = parent_id
 
     def __repr__(self):
-        pass
+        return '<Directory %r>' %self.dir_name
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class TopDirectory(db.Model):
@@ -169,8 +172,11 @@ class TopDirectory(db.Model):
         self.description = description
         self.image_path = image_path
 
-    def __repr__():
-        pass
+    def __repr__(self):
+        return '<TopDirectory %r>' %self.dir_name
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class Admin(db.Model):
