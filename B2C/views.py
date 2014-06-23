@@ -255,9 +255,9 @@ def add_dir(origin_info_set='{}', top = False):
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(path)
         '''
-        if request.args['origin_info_set']:
+        if 'origin_info_set' in request.args:
             o = eval(request.args['origin_info_set'])
-            if request.args['top']:
+            if 'top' in request.args:
                 a = TopDirectory.query.filter_by(id = o['id']).first()
             else:
                 a = Directory.query.filter_by(id = o['id']).first()
@@ -281,6 +281,8 @@ def add_dir(origin_info_set='{}', top = False):
             parents.kids.append(d)
 
         db.session.commit()
+        return redirect(url_for("edit_dir")) 
+
     if 'origin_info_set' in request.args:
         origin_info_set = request.args['origin_info_set']
     return render_template('/back/category_edit.html', origin_info_set=eval(origin_info_set), top_level=TopDirectory.query.all())

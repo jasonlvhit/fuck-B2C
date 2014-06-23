@@ -38,7 +38,7 @@
 		<div id="sendnote">
 			<div id="sendnotehead"><strong>编辑商品目录</strong></div>
 			<div id="sendnotecontent">
-			<form action="" method="post" enctype="multipart/form-data" name="form1">
+			<form action="" method="post"  name="form1"  onsubmit="return checkcategoryform()">
 				<table id="itemsearch">
 				   <tr>
 					<th width="180">目录名称：</th>
@@ -73,7 +73,7 @@
 				 <tr>
 				 <th></th>
 			 	  <td>
-				  <input type="submit" name="button2" value="提交" onClick="checkcategoryform()">
+				  <input type="submit" name="button2" value="提交"">
 				  <input type="Reset" name="button1" value="重填" onClick="clear()">
 				  <input type="Button" name="button22" value="返回" onClick="javascript:window.location.href='/edit_dir'">				  
 				  </td> </tr>
