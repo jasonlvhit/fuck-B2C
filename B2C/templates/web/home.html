@@ -25,9 +25,9 @@
 	</div>
 	<div id="globallink">
 		<ul>
-			<li><a href="home.html">首页</a></li>
+			<li><a href="{{ url_for('index') }}">首页</a></li>
 			<li><a href="credit_query.html">积分查询</a></li>
-			<li><a href="item_search.html">商品搜索</a></li>
+			<li><a href="{{ url_for('item_search') }}">商品搜索</a></li>
 			<li><a href="favorite.html">收藏夹</a></li>
 			<li><a href="cart_list.html">我的购物车</a></li>
 			<li><a href="tradequery.html">交易查询</a></li>
@@ -38,61 +38,20 @@
 	<div id="banner"></div>
 	<div id="left">
 		<div id="category">
-			<h4><span>图书音像</span></h4>
+			<h3>dir list </h3>
+			{% for dir in top_dir %}
+
+			<h4><span>{{ dir.dir_name }}</span></h4>
 			<ul>
-				<li><a href="item_list.html">教材</a></li>
-				<li><a href="#">外语</a></li>
-				<li><a href="#">公务员考试</a></li>
-				<li><a href="#">音乐</a></li>
-				<li><a href="#">音乐</a></li>
-				<li><a href="#">影视</a></li>
+				{% for i in dir.kids %}
+					<li><a href="{{ url_for('item_list', cate_id = i.id ) }}">{{ i.dir_name }}</a></li>
+				{% endfor %}
 			</ul>
-			<h4><span>时尚生活</span></h4>
-			<ul>
-				<li><a href="#">护肤</a></li>
-				<li><a href="#">服装</a></li>
-				<li><a href="#">手饰</a></li>
-				<li><a href="#">箱包</a></li>
-				<li><a href="#">小家电</a></li>
-				<li><a href="#">运动健身</a></li>
-			</ul>
-			<h4><span>数据产品</span></h4>
-			<ul>
-				<li><a href="#">数码相机</a></li>
-				<li><a href="#">数码录音笔</a></li>
-				<li><a href="#">硬盘</a></li>
-				<li><a href="#">MP3</a></li>
-				<li><a href="#">耳机</a></li>
-				<li><a href="#">数码配件</a></li>
-			</ul>
-			<h4><span>鲜花速递</span></h4>
-			<ul>
-				<li><a href="#">玫瑰</a></li>
-				<li><a href="#">百合</a></li>
-				<li><a href="#">康乃馨</a></li>
-				<li><a href="#">太阳花</a></li>
-				<li><a href="#">菊花</a></li>
-			</ul>
-      </div>
+			{% endfor %}
+        </div>
 	</div>
 	<div id="main">
-		<div id="search1">
-			<div id="searchleft">
-				<img src="../image/ico_site.jpg" id="ico_site"/>
-				网站路径：<a href="home.html">首页</a>			</div>
-			<div id="searchright">
-			  <select name="category" id="searchrightcategory">
-				<option value="5">所有类别</option>
-                <option value="1">图书音像</option>
-                <option value="2">时尚生活</option>
-                <option value="3">饰品配件</option>
-                <option value="4">数码产品</option>
-              </select>
-			  <input type="text" name="product" id="textInput" />
-			  <input type="button" name="Submit" value="搜索" id="searchbutton" onClick="javascript:window.open('item_search_list.html','_parent','')">
-				
-			</div>
-		</div>
+		{% include 'web/quick_search.html' %} 
 		
 		
 		<div id="recommend">

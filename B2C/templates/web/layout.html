@@ -8,24 +8,27 @@
 <body>
 	<div id="container">
 		<div id="logalleft">
-			<div id="logalright">
-				<a href="register.html" target="_parent">[注册&nbsp;</a>] | 
-				<a href="" target="_parent">王小静 已登录|></a> 
-				<a href="user_edit.html" target="_parent">个人信息维护</a> | 
-				<a href="address_daohang.html" target="_parent">地址簿</a> |
-				<a href="home_nologin.html" target="_parent">退出</a>
-			</div>
+		{% if g.user %} 
+		  <a href="" target="_parent">{{ g.user.username }} 已登录|
+		  <a href="logout" target="_parent">退出</a>|
+		  <a href="user_edit.html" target="_parent">个人信息维护</a> |
+		  <a href="address_daohang.html" target="_parent">地址簿</a> |
+		{% else %}
+		 <a href="/register" target="_parent">[注册&nbsp;</a>] |
+		 <a href="/login" target="_parent"> Login &nbsp;</a>] |
+		{% endif %}
 		</div>
 		<div id="globallink">
 			<ul>
-				<li><a href="home.html" id="current">首页</a></li>
-				<li><a href="credit_query.html">积分查询</a></li>
-				<li><a href="item_search.html">商品搜索</a></li>
-				<li><a href="favorite.html">收藏夹</a></li>
-				<li><a href="cart_list.html">我的购物车</a></li>
-				<li><a href="tradequery.html">交易查询</a></li>
-				<li><a href="send_notes.html">送货说明</a></li>
-				<li><a href="" class="nouseful">&nbsp;</a></li>
+				
+			<li><a href="{{ url_for('index') }}">首页</a></li>
+			<li><a href="credit_query.html">积分查询</a></li>
+			<li><a href="{{ url_for('item_search') }}">商品搜索</a></li>
+			<li><a href="favorite.html">收藏夹</a></li>
+			<li><a href="cart_list.html">我的购物车</a></li>
+			<li><a href="tradequery.html">交易查询</a></li>
+			<li><a href="send_notes.html">送货说明</a></li>
+			<li><a href="" class="nouseful">&nbsp;</a></li>
 			</ul>
 		</div>
 

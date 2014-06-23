@@ -1,4 +1,4 @@
-import os
+import sys
 from datetime import datetime
 from functools import wraps
 from werkzeug import check_password_hash, generate_password_hash, secure_filename
@@ -35,8 +35,54 @@ def get_user_id(email=None):
 
 @app.route("/")
 def index():
-    return render_template("web/home.html")
+    return render_template("web/home.html", top_dir = TopDirectory.query.all())
 
+#do the real search stuff
+def _search(keyword = None, cate_id = None, price_level = 0, discount_level = 0):
+    assert keyword
+
+    price_map = {
+        0:{"lower_bound": 0, "upper_bound": sys.maxint},
+        1:{"lower_bound": 0, "upper_bound": 10},
+        2:{"lower_bound": 10, "upper_bound": 30},
+        3:{"lower_bound": 30, "upper_bound": 50},
+        4:{"lower_bound": 50, "upper_bound": 100},
+        5:{"lower_bound": 100, "upper_bound": sys.maxint}
+    }
+
+    discount_map = {
+        0:{"lower_bound": 0, "upper_bound": 1.0},
+        1:{"lower_bound": 0, "upper_bound": 0.3},
+        2:{"lower_bound": 0.3, "upper_bound": 0.5},
+        3:{"lower_bound": 0.5, "upper_bound": 0.7},
+        4:{"lower_bound": 0.7, "upper_bound": 1.0}
+    }
+
+    items = Item.query.filter(Item.item_name == keyword,
+        Item.price >= price_map[price_level]['lower_bound'],
+        Item.price < price_map[price_level]['upper_bound'],
+        Item.discount >= discount_map[discount_level]['lower_bound'],
+        Item.discount < discount_map[discount_level]['upper_bound']).all()
+
+    if cate_id:
+        for i in items:
+            if i.cate_id != cate_id:
+                del i
+    return items
+
+@app.route('/item_search', methods = ['GET', 'POST'])
+def item_search():
+    cate_id = None
+    if request.method == 'POST':
+        if request.form['cate_id'] != '':
+            cate_id = request.form['cate_id']
+        items = _search(request.form['keyword'], cate_id, int(request.form['price_level']), int(request.form['discount_level']))
+        return render_template('web/item_search_list.html', items = items)
+    return render_template('web/item_search.html', top_dir = TopDirectory.query.all())
+
+@app.route('/item_info/<int:id>')
+def item_info(id):
+    return render_template('web/item_info.html', item = Item.query.filter_by(id = id).first())
 
 @login_required
 @app.route("/add_address", methods=['GET', 'POST'])
