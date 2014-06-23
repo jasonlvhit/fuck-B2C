@@ -60,10 +60,11 @@ def add_address():
             # Do insert
             a = Address(rc_name, addr_name, phone, zipcode, is_local=is_local)
             db.session.add(a)
+            g.user.address.append(a)
             db.session.commit()
 
     # Query database for address entries
-    address_list = Address.query.all()
+    address_list = Address.query.filter_by(user_id=session['user_id'])
     return render_template('web/address_daohang.html', address_list=address_list)
 
 
@@ -144,10 +145,74 @@ def register():
 
 
 
-@app.route("/edit_profile")
+@app.route("/edit_profile", methods=['GET', 'POST'])
 @login_required
 def edit_profie():
-    pass
+    if request.method == 'POST':
+        if not check_password_hash(g.user.pw_hash, request.form['passwordold']):
+            flash("Origin password incorrect!")
+            return redirect('edit_profile')
+        # nickname not none then change it
+        if request.form['name'] != "":
+            g.user.username = request.form['name']
+        g.user.pw_hash = generate_password_hash(request.form['passwordnew'])
+        db.session.commit()
+        flash("Success!")
+
+    return render_template('web/user_edit.html')
+
+@app.route("/find_password", methods=['GET', 'POST'])
+def find_password():
+    if request.method == 'POST':
+        email_address = request.form['email']
+        new_password = str(random.randint(100000, 999999))
+        g.user.pw_hash = generate_password_hash(new_password)
+        send_email(email_address, "Retrive Password", "Your new password is " + new_password)
+        flash("Mail sent!")
+
+    return render_template('web/pwd_find.html')
+
+def send_email(to_email_address, subject, text):
+    msg = MIMEText(text)
+    msg['To'] = email.utils.formataddr(('User', to_email_address))
+    msg['From'] = email.utils.formataddr(('B2C', 'author@example.com'))
+    msg['Subject'] = subject
+
+    server = smtplib.SMTP("219.217.227.32", 25)
+    server.set_debuglevel(True) # show communication with the server
+    server.ehlo()
+    server.login("b1123710410@ssmail.hit.edu.cn", "BENKE")
+    try:
+        server.sendmail('b1123710410@ssmail.hit.edu.cn', [to_email_address], msg.as_string())
+       
+    finally:
+        server.quit()
+
+@app.route("/query_credit")
+@login_required
+def query_credit():
+    return render_template("web/credit_query.html")
+
+@app.route("/manage_user", methods=['GET', 'POST'])
+def manage_user():
+    credit_req = CreditRequirement.query.get(0)
+    if request.method == 'POST':
+        if request.form['userlevel'] == '1':
+            credit_req.normal = request.form['credit']
+            credit_req.normal_percent = request.form['ratio']
+        elif request.form['userlevel'] == '2':
+            credit_req.silver = request.form['credit']
+            credit_req.silver_percent = request.form['ratio']
+        elif request.form['userlevel'] == '3':
+            credit_req.gold = request.form['credit']
+            credit_req.gold_percent = request.form['ratio']
+        elif request.form['userlevel'] == '4':
+            credit_req.pt = request.form['credit']
+            credit_req.pt_percent = request.form['ratio']
+        db.session.commit()
+        return redirect('/manage_user')
+
+    return render_template('back/user_admin.html', credit_req=credit_req)
 
 # fuck fuck fuck ...............................
 
