@@ -11,7 +11,7 @@ order_item_re = db.Table('order_items',
 user_collection_re = db.Table('collection', 
     db.Column('id', db.Integer, primary_key = True),
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-    db.COlumn('item_id', db.Integer, db.ForeignKey('item.id')),
+    db.Column('item_id', db.Integer, db.ForeignKey('item.id')),
     db.Column('date', db.DateTime)
     )
 
@@ -136,18 +136,21 @@ class Comment(db.Model):
     rate = db.Column(db.Integer)
     title = db.Column(db.String(80))
     content = db.Column(db.Text)
+    date = db.Column(db.DateTime)
 
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
-    user_id = db.COlumn(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, rate, title, content, item_id):
+    def __init__(self, rate, title, content, date, item_id, user_id):
         self.rate = rate
         self.title = title
         self.content = content
         self.item_id = item_id
+        self.date = date
+        self.user_id = user_id
 
     def __repr__(self):
-        pass
+        return '<Commment %r>' % self.title
 
 
 class Directory(db.Model):

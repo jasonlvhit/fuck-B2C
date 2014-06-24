@@ -1,93 +1,36 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-<title>BC2商城</title>
-<link href="{{ url_for('static', filename='web/css/frame.css') }}" rel="stylesheet" type="text/css">
-   </head>
-
-<body>
-<div id="container">
-	<div id="logalleft">
-		<div id="logalright">
-		<a href="register.html" target="_parent">[注册&nbsp;</a>] | 
-		<a href="" target="_parent">王小静 已登录| 
-		<a href="user_edit.html" target="_parent">个人信息维护</a> | 
-		<a href="address_daohang.html" target="_parent">地址簿</a> |
-	 	<a href="home_nologin.html" target="_parent">退出</a>
-		</div>
-	</div>
-	<div id="globallink">
-		<ul>
-			<li><a href="home.html">首页</a></li>
-			<li><a href="credit_query.html">积分查询</a></li>
-			<li><a href="item_search.html">商品搜索</a></li>
-			<li><a href="favorite.html">收藏夹</a></li>
-			<li><a href="cart_list.html">我的购物车</a></li>
-			<li><a href="tradequery.html">交易查询</a></li>
-			<li><a href="send_notes.html">送货说明</a></li>
-			<li><a href="" class="nouseful">&nbsp;</a></li>
-		</ul>
-	</div>
-	<div id="banner"></div>
+{% extends "web/layout.html" %}
+{% block main %}
 	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
 				<img src="../image/ico_site.jpg"  id="ico_site"/>
 				网站路径：<a href="home.html">首页</a>&gt;&gt;<a href="">查看商品评论</a>
 			</div>
-			<div id="searchright2">
-			  <input type="text" name="product" id="textInput"/>
-			  <input type="button" name="Submit" value="搜索" id="searchbutton" onClick="javascript:window.open('item_search_list.html','_parent','')">
-			</div>
-			<div id="searchright1">
-			  <select name="category" id="searchrightcategory">
-				<option value="5">所有类别</option>
-                <option value="1">图书音像</option>
-                <option value="2">时尚生活</option>
-                <option value="3">饰品配件</option>
-                <option value="4">数码产品</option>
-              </select>
-			  </div>
+			{% include "web/quick_search.html" %}
 		</div>
 		<div id="sendnote">
-			<div id="sendnotehead"><strong>共有2条评论</strong></div>
+			<div id="sendnotehead"><strong>共有{{ comments|length }}条评论</strong></div>
 			<div id="sendnotecontent">
 				<table id="creditquery">
+					{% for comment in comments %}
 					<tr>
 					<td class="commentr1color"> 会员：</td>
-					<td class="commentr1color"> zhangtong123@163.com</td>
+					<td class="commentr1color"> {{ comment.user.username }}</td>
 					<td class="commentr1color"> 发表时间：</td>
-					<td class="commentr1color"> 2007-10-05 22:12:30</td>
+					<td class="commentr1color"> {{ comment.date }}</td>
 					<td class="commentr1color"> 打分：</td>
-					<td class="commentr1color"> <img src="../image/4star.JPG" alt="喜欢"></td>
+					{% for i in range(comment.rate) %}
+					<td class="commentr1color"> <img src="{{ url_for('static', filename = 'web/image/1star.JPG') }}" alt="喜欢"></td>
+					{% endfor %}
 					</tr>
 					<tr>
 					<td class="commentr2color">评论：</td>
 	     			<td colspan="5" class="commentr2color">
-					<span class="red">很不错的一本书，通俗易懂，是大学物理教材中的经典之作。</span> 
+					<span class="red">{{ comment.content }}</span> 
 					</td>
 	 			   </tr>
-				   	<tr>
-					<td class="commentr1color"> 会员：</td>
-					<td class="commentr1color"> wangqd456@126.com</td>
-					<td class="commentr1color"> 发表时间：</td>
-					<td class="commentr1color"> 2007-10-20 17:23:16</td>
-					<td class="commentr1color"> 打分：</td>
-					<td class="commentr1color"> <img src="../image/4star.JPG" alt="喜欢"></td>
-					</tr>
-					<tr>
-					<td class="commentr2color">评论：</td>
-	     			<td colspan="5" class="commentr2color"><span class="red">看过了，确实不错。</span></td>
-	 			   </tr>
+				   	{% endfor %}
             </table>	
 			</div>
 		</div>
-		
-	<div id="footer">
-		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
-		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
-	</div>
-</div>
-
-</body>
-</html>
+{% endblock %}

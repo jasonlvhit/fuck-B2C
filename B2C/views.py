@@ -398,9 +398,24 @@ def remove_item(id):
     db.session.commit()
     return redirect(url_for('item_list', cate_id = cate_id))
 
-@app.route('/comments_list', methods = ['POST', 'GET'])
-def comments_list():
-    pass
+@app.route('/comment_list/<int:id>', methods = ['GET'])
+@login_required
+def comment_list(id):
+    comments = Comment.query.filter_by(item_id = id).all()
+    for comment in comments:
+        user = User.query.filter_by(id = comment.user_id).first()
+        comment.__dict__['user'] = user
+    return render_template('web/comment_list.html', comments = comments)
 
+@app.route('/add_comment/<int:id>', methods = ['POST', 'GET'])
+@login_required
+def add_comment(id):
+    if request.method == 'POST':
+        date = datetime.now()
+        comment = Comment(request.form['like'],'',request.form['desc'], date, id, g.user.id)
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for('comment_list', id = id))
+    return render_template('web/comment_add.html')
     
 

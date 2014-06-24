@@ -1,83 +1,41 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-<title>BC2商城</title>
-<link href="{{ url_for('static', filename='web/css/frame.css') }}" rel="stylesheet" type="text/css"/>
-<script language="javascript" src="{{ url_for('static', filename='web/js/checkform.js') }}"></script>
-</head>
-
-<body>
-<div id="container">
-	<div id="logalleft">
-		<div id="logalright">
-		<a href="register.html" target="_parent">[注册&nbsp;</a>] | 
-		<a href="" target="_parent">王小静 已登录| 
-		<a href="user_edit.html" target="_parent">个人信息维护</a> | 
-		<a href="address_daohang.html" target="_parent">地址簿</a> |
-	 	<a href="home_nologin.html" target="_parent">退出</a>
-		</div>
-	</div>
-	<div id="globallink">
-		<ul>
-			<li><a href="home.html">首页</a></li>
-			<li><a href="credit_query.html">积分查询</a></li>
-			<li><a href="item_search.html">商品搜索</a></li>
-			<li><a href="favorite.html">收藏夹</a></li>
-			<li><a href="cart_list.html">我的购物车</a></li>
-			<li><a href="tradequery.html">交易查询</a></li>
-			<li><a href="send_notes.html">送货说明</a></li>
-			<li><a href="" class="nouseful">&nbsp;</a></li>
-		</ul>
-	</div>
-	<div id="banner"></div>
+{% extends "web/layout.html" %}
+{% block main %}
 	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
 				<img src="../image/ico_site.jpg"  id="ico_site"/>
 				网站路径：<a href="home.html">首页</a>&gt;&gt;<a href="item_info.html">商品信息</a>&gt;&gt;<a href="">添加评论</a>
 			</div>
-			<div id="searchright2">
-			  <input type="text" name="product" id="textInput"/>
-			  <input type="button" name="Submit" value="搜索" id="searchbutton" onClick="javascript:window.open('item_search_list.html','_parent','')">
-			</div>
-			<div id="searchright1">
-			  <select name="category" id="searchrightcategory">
-				<option value="5">所有类别</option>
-                <option value="1">图书音像</option>
-                <option value="2">时尚生活</option>
-                <option value="3">饰品配件</option>
-                <option value="4">数码产品</option>
-              </select>
-		  </div>
+			{% include "web/quick_search.html" %}
 		</div>
 		<div id="sendnote">
 			<div id="sendnotehead"><strong>添加评论</strong></div>
 			<div id="sendnotecontent">
-			<form action="" method="post" enctype="multipart/form-data" name="form1">
+			<form action="" method="post"  name="form1" onsubmit="checkcommentform()">
 				<table id="commenttable">
 				   <tr>
 					<th>打分：</th>
-            		<td><input type="radio" name="radiobutton" value="radiobutton"></td>
-              		<td><img src="../image/1star.JPG" alt="1星">很不喜欢</td>
-					<td><input type="radio" name="radiobutton" value="radiobutton"></td>
-              		<td><img src="../image/2star.JPG" alt="2星">不喜欢</td>
-					<td><input type="radio" name="radiobutton" value="radiobutton"></td>
-              		<td><img src="../image/3star.JPG" alt="3星">一般</td>
-					<td><input type="radio" name="radiobutton" value="radiobutton"></td>
-              		<td><img src="../image/4star.JPG" alt="4星">喜欢</td>
-					<td><input type="radio" name="radiobutton" value="radiobutton"></td>
-              		<td><img src="../image/5star.JPG" alt="5星">很喜欢</td>
+            		<td><input type="radio" name="like" value="1"></td>
+              		<td><img src="{{ url_for('static', filename = 'web/image/1star.JPG') }}" alt="1星">很不喜欢</td>
+					<td><input type="radio" name="like" value="2"></td>
+              		<td><img src="{{ url_for('static', filename = 'web/image/2star.JPG') }}" alt="2星">不喜欢</td>
+					<td><input type="radio" name="like" value="3"></td>
+              		<td><img src="{{ url_for('static', filename = 'web/image/3star.JPG') }}" alt="3星">一般</td>
+					<td><input type="radio" name="like" value="4"></td>
+              		<td><img src="{{ url_for('static', filename = 'web/image/4star.JPG') }}" alt="4星">喜欢</td>
+					<td><input type="radio" name="like" value="5"></td>
+              		<td><img src="{{ url_for('static', filename = 'web/image/5star.JPG') }}" alt="5星">很喜欢</td>
           		 </tr>
 				 <tr>
 				 	<th>评论：</th>
 					<td colspan="10">
-					<textarea name="webUserEntity.desc" class="textAreaStyle"></textarea>
+					<textarea name="desc" class="textAreaStyle"></textarea>
 					</td>
 				 </tr>
 				 <tr>
 				 	<th>&nbsp;</th>
 					<td colspan="10">
-					<input type="Button" class="bt2" name="button2" value="提交" onClick="checkcommentform()">
+					<input type="submit" class="bt2" name="button2" value="提交" >
 					&nbsp;<input type="Reset" class="bt2"　name="button1" value="重填" onClick="clear()">
 					</td>
 				 </tr>
@@ -86,11 +44,4 @@
 			</div>
 		</div>
 		
-	<div id="footer">
-		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
-		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
-	</div>
-</div>
-
-</body>
-</html>
+{% endblock %}
