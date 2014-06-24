@@ -53,7 +53,7 @@
 					{% for user in users %}
 				  <tr>
 				  	<td>{{ user.email }}</td>
-            		<td>{% if cre.normal > user.points % }
+            		<td>{% if cre.normal > user.points %}
             			customer
             			{% elif cre.silver > user.points and user.points >= cre.normal %}
             			normal customer
@@ -63,12 +63,12 @@
             			gold customer
             			{% else %}
             			pt customer
-            			{% endfor %}
+            			{% endif %}
 
             		</td>
 					<td>{{ user.points }}</td>
 					<td>{{ user.register_date }} </td>
-					<td><a href="{{ url_for('remove_user', id = user.id) }}"><img src="{{ url_for( 'static', filename = 'back/image/bt_delete.gif') }}" alt="删除" class="picture"></a></td>
+					<td><a href="{{ url_for('remove_user', user_id = user.id) }}"><img src="{{ url_for( 'static', filename = 'back/image/bt_delete.gif') }}" alt="删除" class="picture"></a></td>
           		  </tr>
 				  {% endfor %}
 				

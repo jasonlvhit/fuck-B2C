@@ -506,35 +506,24 @@ def query_user():
         level_point = tmp.silver
     elif level == '3':
         level_point = tmp.gold
-    else:
+    elif level == '4':
         level_point = tmp.pt
 
+    low_date = '-'.join([lower_year, lower_month, lower_day])
+    upper_date = '-'.join([upper_year, upper_month, upper_day])
 
     users = User.query.filter(
-        User.register_date.year >= int(lower_year),
-        User.register_date.year <= int(upper_year),
-        User.register_date.month >= int(lower_month),
-        User.register_date.month <= int(upper_month),
-        User.register_date.day >= int(lower_day),
-        User.register_date.day <= int(upper_day),
-        User.points > level_point 
+        User.register_date >= low_date,
+        User.register_date <= upper_date,
+        User.points >= level_point 
         ).all()
 
     return render_template('back/user_list.html', users = users, cre = tmp)
 
-@app.route('/remove_user/<int:user_id>', methods = ['GET'])
+@app.route('/remove_user/<int:user_id>', methods=['GET'])
 def remove_user(user_id):
     u = User.query.filter_by(id = user_id).first()
     db.session.delete(u)
-    sb.session.commit()
+    # try
+    db.session.commit()
     return redirect(url_for('manage_user'))
-
-
-
-
-
-
-
-
-    
-
