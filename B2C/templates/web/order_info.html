@@ -1,24 +1,21 @@
 {% extends "web/layout.html" %}
 {% block main %}
+<script language="javascript">
+function clear(){
+
+document.form1.webUserEntity.name="";
+document.form1.webUserEntity.address="";
+document.form1.webUserEntity.postcode="";
+document.form1.webUserEntity.phone="";
+}
+</script>
+
 	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
 				<img src="../image/ico_site.jpg"  id="ico_site"/>
-				网站路径：<a href="cart_list.html">购物车</a>&gt;&gt;<a href="#">订单详细信息</a>
+				网站路径：订单详细信息
 			</div>
-			<div id="searchright2">
-			  <input type="text" name="product" id="textInput"/>
-			  <input type="button" name="Submit" value="搜索" id="searchbutton" onClick="javascript:window.open('item_search_list.html','_parent','')">
-			</div>
-			<div id="searchright1">
-			  <select name="category" id="searchrightcategory">
-				<option value="5">所有类别</option>
-                <option value="1">图书音像</option>
-                <option value="2">时尚生活</option>
-                <option value="3">饰品配件</option>
-                <option value="4">数码产品</option>
-              </select>
-		  </div>
 		</div>
 		<div id="double1">
 			<div id="doublehead1"><strong>配送信息</strong></div>
@@ -27,15 +24,15 @@
 				<table id="doublecontenttable3">
 				 <tr>
 					<td>订单号</td>
-					<td>1483728</td>
+					<td>{{ order.id }}</td>
             		<td>客户号</td>
-					<td>wangxj123@163.com</td>
+					<td>{{ g.user.email }}</td>
 					<td>下单时间</td>
-					<td>2007-10-01&nbsp;10:25:04</td>
+					<td>{{ order.date }}</td>
          		 </tr>
 		  		 <tr>
            			<td>订单金额</td>
-					<td>￥30.18</td>
+					<td>{{ order.total }}</td>
 					<td>支付方式</td>
 					<td>货到付款</td>
             		<td>送货方式</td>
@@ -43,17 +40,16 @@
 			</tr>
 			 <tr>
             	<td>收货人</td>
-			    <td>王小静</td>
+			    <td>{{ order.address.reciver_name }}</td>
 			    <td>收货人地址</td>
-            <td>北京市海淀区翠微路甲5号</td>
+            <td>{{ order.address.address_name }}</td>
 					<td>订单状态</td>
 					<td>已支付</td>
 			</tr>
 			 <tr>
-            <td>收货人E-mail</td>
-			<td>wangxj123@163.com</td>
+            
 			<td>收货人手机</td>
-			<td>13812345678</td>
+			<td>{{ order.address.phone }}</td>
 					<td></td>
 					<td></td>					
 				 </tr>
@@ -76,30 +72,17 @@
 					</tr>
 				</thead>
 				<tbody>
+					{% for i in order.items %}
 				  <tr>
-            		<td>300254</td>
-					<td><a href="item_info.html">大学物理学.第四册：波动与光学（第2版）</a></td>
-					<td>￥10.00</td>
-					<td>85折</td>
-					<td>￥8.50</td>
-					<td>1</td>
+            		<td><span>{{ i.id }}</span></td>
+					<td><a href="{{ url_for('item_info', id = i.id) }}">{{ i.item_name }}</a></td>
+					<td>￥{{ i.price }}</td>
+					<td>折:{{ i.discount }}</td>
+					<td>￥{{ i.discount * i.price }}</td>
+					<td>{{ order.count.split('|')[order.items.index(i)] }}</td>
           		  </tr>
-				  <tr>
-            		<td>300040</td>
-					<td><a href="#">大学物理学.第一册：力学（第2版）</a></td>
-					<td>￥16.00</td>
-					<td>85折</td>
-					<td>￥13.60</td>
-					<td>1</td>
-          		  </tr>
-				  <tr>
-            		<td>300095</td>
-					<td><a href="#">大学物理学.第二册：热学（第2版）</a></td>
-					<td>￥9.50</td>
-					<td>85折</td>
-					<td>￥8.08</td>
-					<td>1</td>
-          		  </tr>
+          		  {% endfor %}
+				  
 				 </tbody>
             </table>
 			</form> 

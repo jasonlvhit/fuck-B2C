@@ -583,5 +583,16 @@ def submit_order():
     db.session.add(order)
     db.session.commit()
     return render_template("web/order_success.html", total = request.form['total'])
+
+@app.route('/order_info/<int:order_id>')
+def order_info(order_id):
+    order = Order.query.get(order_id)
+    address = Address.query.get(order.address_id)
+    order.__dict__['address'] = address
+    return render_template('web/order_info.html', order = order)
+
+@app.route('/credit_query')
+def credit_query():
+    return render_template('web/credit_query.html', orders = g.user.orders.all(), points = g.user.points)
     
 
