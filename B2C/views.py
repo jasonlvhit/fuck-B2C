@@ -9,7 +9,7 @@ from werkzeug import check_password_hash, generate_password_hash, secure_filenam
 from flask import Flask, g, url_for, redirect, flash, render_template, session, _app_ctx_stack, request
 
 from B2C import db, app
-from models import User, Comment, Item, Address, Order, Directory, TopDirectory, Admin, CreditRequirement
+from models import User, Comment, Item, Address, Order, Directory, TopDirectory, Admin, CreditRequirement, order_item_re, user_collection_re
 
 
 @app.before_request
@@ -417,5 +417,32 @@ def add_comment(id):
         db.session.commit()
         return redirect(url_for('comment_list', id = id))
     return render_template('web/comment_add.html')
+
+@app.route('/collect/<int:id>', methods = ['GET'])
+@login_required
+def collect(id):
+    assert request.method == 'GET'
+    r = db.session.execute(user_collection_re.insert(), {'user_id':g.user.id,'item_id':id, 'date':datetime.now()})
+    if r.is_insert:
+        db.session.commit()
+    return redrict(url_for('collection'))
+
+@app.route('/collection')
+@login_required
+def collection():
+    return render_template('web/favorite.html', items = g.user.collections)
+
+@app.route('/remove_from_collection/<int:id>', methods = ['GET'])
+@login_required
+def remove_from_collection(id):
+    assert request.method == 'GET'
+    db.session.execute(models.user_collection_re.delete(), {'item_id':id, 'user_id':g.user.id})
+    db.session.commit()
+    return redirect(url_for('collection'))
+
+
+
+
+
     
 
