@@ -16,16 +16,25 @@
 <div id="double1">
 	<div id="doublehead1"><strong>地址簿列表</strong></div>
 	<div id="doublecontent1">
+		<form action="/confirm_order_address" method="post">
 		<table id="doublecontenttable1">
 			<thead>
 				<tr>
+				{% if session['address'] %}
+				<th></th>
+				{% endif %}	
 					<th>地址簿</th>
 					<th>操作</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for addr in address_list %}
-				<tr>	
+				<tr>
+					{% if session['address'] %}
+				<td>
+					<input type="radio" name="radiobutton" value="{{ addr.id }}" {% if session['address'] == addr.id %} checked="checked" {% endif %}>
+				</td>		
+					{% endif %}
 					<td>
 						{{ addr.address_name }}
 					</td>
@@ -35,8 +44,18 @@
 					</td>
 				</tr>
 				{% endfor %}
+				{% if session['address'] %}
+				<tr>
+							<td></td><td></td>
+							<td>
+								<input type="submit" value="配送到这个地址">
+								<!--<img src="{{ url_for('static', filename='web/image/qydzb1.GIF') }}" alt="配送至该地址"  class="picture"></input>-->
+							</td>
+				</tr>
+				{% endif %}
 			</tbody>
 		</table>
+	</form>
 	</div>
 </div>
 <div id="double2">

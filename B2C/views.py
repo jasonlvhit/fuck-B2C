@@ -149,6 +149,16 @@ def delete_address():
     # Query database for all address entries
     return redirect(url_for('add_address'))
 
+@app.route('/confirm_order_address', methods=['POST'])
+@login_required
+def confirm_order_address():
+	order_address = request.form['radiobutton']
+	session['address'] = int(order_address)
+	if session['cart_list'] == "":
+		return redirect('/')
+
+	return redirect('/order_confirm')
+
 # User register, login and logout
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -298,11 +308,6 @@ def update_cart_list():
 
     session['cart_list'] = json_encoder.encode(d)
     return redirect('/show_cart_list')
-
-@app.route("/query_credit")
-@login_required
-def query_credit():
-    return render_template("web/credit_query.html")
 
 # Manager user credit settings(Really? WTF?!)
 @app.route("/manage_user", methods=['GET', 'POST'])
