@@ -50,20 +50,27 @@
 					</tr>
 				</thead>
 				<tbody>
+					{% for user in users %}
 				  <tr>
-				  	<td>zhangtong123@163.com</td>
-            		<td>普通会员</td>
-					<td>10</td>
-					<td>2007-08-26 10:23:12 </td>
-					<td><a href="#" onClick="javascript:if(window.confirm('确定删除？')) window.location.href='user_list_refresh.html';else return false;"><img src="../image/bt_delete.gif" alt="删除" class="picture"></a></td>
+				  	<td>{{ user.email }}</td>
+            		<td>{% if cre.normal > user.points % }
+            			customer
+            			{% elif cre.silver > user.points and user.points >= cre.normal %}
+            			normal customer
+            			{% elif cre.gold > user.points and user.points >= cre.silver %}
+            			silver customer
+            			{% elif cre.pt > user.points and user.points >= cre.gold %}
+            			gold customer
+            			{% else %}
+            			pt customer
+            			{% endfor %}
+
+            		</td>
+					<td>{{ user.points }}</td>
+					<td>{{ user.register_date }} </td>
+					<td><a href="{{ url_for('remove_user', id = user.id) }}"><img src="{{ url_for( 'static', filename = 'back/image/bt_delete.gif') }}" alt="删除" class="picture"></a></td>
           		  </tr>
-				  <tr>
-				  	<td>wangxj123@126.com</td>
-            		<td>银卡会员</td>
-					<td>310</td>
-					<td>2006-02-15 22:26:18 </td>
-					<td><img src="../image/bt_delete.gif" alt="删除" class="picture"></td>
-          		  </tr>
+				  {% endfor %}
 				
 				 </tbody>
             </table>

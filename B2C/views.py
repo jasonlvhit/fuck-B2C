@@ -452,7 +452,39 @@ def query_user():
     upper_month = request.form['upper_month']
     upper_day = request.form['upper_day']
 
-    
+    level_point = 0
+    tmp = CreditRequirement.query.first()
+
+    if level == '1':
+        level_point = tmp.normal
+    elif level == '2':
+        level_point = tmp.silver
+    elif level == '3':
+        level_point = tmp.gold
+    else:
+        level_point = tmp.pt
+
+
+    users = User.query.filter(
+        User.register_date.year >= int(lower_year),
+        User.register_date.year <= int(upper_year),
+        User.register_date.month >= int(lower_month),
+        User.register_date.month <= int(upper_month),
+        User.register_date.day >= int(lower_day),
+        User.register_date.day <= int(upper_day),
+        User.points > level_point 
+        ).all()
+
+    return render_template('back/user_list.html', users = users, cre = tmp)
+
+@app.route('/remove_user/<int:user_id>', method = 'GET')
+def remove_user(user_id):
+    u = User.query.filter_by(id = user_id).first()
+    db.session.add(u)
+    sb.session.commit()
+    return redirect(url_for('manage_user'))
+
+
 
 
 
