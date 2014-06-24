@@ -5,8 +5,8 @@
 	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
-				<img src="../image/ico_site.jpg" id="ico_site"/>
-				网站路径：<a href="item_search.html">商品搜索</a>&gt;&gt;<a href="">搜索结果</a>
+				<img src="{{ url_for('static', filename='web/image/ico_site.jpg') }}" id="ico_site"/>
+				网站路径：<a href="/item_search">商品搜索</a>&gt;&gt;<a href="">搜索结果</a>
 			</div>
 			{% include 'web/quick_search.html' %} 
 		</div>
@@ -34,8 +34,8 @@
 						<span class="red">{{ i.item_name }}</span><br>
 						市场价：￥{{ i.price }}<br>
 						会员价：￥{{ i.price * i.discount }}<br>
-						<a href="cart_list.html"><img src="../image/goumai.gif" alt="购买" class="picture"></a>&nbsp;
-		<a href="favorite.html"><img src="../image/put_to_collection.gif" alt="收藏" class="picture"></a>
+						<a href="/add_to_cart/{{ i.id }}"><img src="{{ url_for('static', filename='web/image/goumai.gif') }}" alt="购买" class="picture"></a>&nbsp;
+		<a href="/collect/{{ i.id }}"><img src="{{ url_for('static', filename='web/image/put_to_collection.gif') }}" alt="收藏" class="picture"></a>
 					</td>
           		  </tr>
 				  	{% endfor %}
