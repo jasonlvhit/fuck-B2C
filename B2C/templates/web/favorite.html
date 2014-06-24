@@ -41,7 +41,7 @@
 						{{ i.price * i.discount }}
 					</td>
 					<td>
-						<a href="cart_list.html"><img src="{{ url_for('static', filename = 'web/image/put_to_cart.gif') }}" class="picture"/></a>&nbsp;<a href="{{ url_for('remove_from_collection', id = i.id) }}"><img src="{{ url_for('static', filename = 'web/image/delete_item.gif') }}" class="picture" /></a>
+						<a href="/add_to_cart/{{ i.id }}"><img src="{{ url_for('static', filename = 'web/image/put_to_cart.gif') }}" class="picture"/></a>&nbsp;<a href="{{ url_for('remove_from_collection', id = i.id) }}"><img src="{{ url_for('static', filename = 'web/image/delete_item.gif') }}" class="picture" /></a>
 					</td>
           		  </tr>
           		  {% endfor %}

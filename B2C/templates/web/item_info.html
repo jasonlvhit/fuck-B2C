@@ -1,38 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-<title>BC2商城</title>
-<link href="{{ url_for('static', filename='web/css/frame.css') }}" rel="stylesheet" type="text/css">
-   </head>
+{% extends "web/layout.html" %}
+{% block main %}
 
-<body>
-<div id="container">
-	<div id="logalleft">
-		<div id="logalright">
-		<a href="register.html" target="_parent">[注册&nbsp;</a>] | 
-		<a href="" target="_parent">王小静 已登录| 
-		<a href="user_edit.html" target="_parent">个人信息维护</a> | 
-		<a href="address_daohang.html" target="_parent">地址簿</a> |
-	 	<a href="home_nologin.html" target="_parent">退出</a>
-		</div>
-	</div>
-	<div id="globallink">
-		<ul>
-			<li><a href="home.html">首页</a></li>
-			<li><a href="credit_query.html">积分查询</a></li>
-			<li><a href="item_search.html">商品搜索</a></li>
-			<li><a href="favorite.html">收藏夹</a></li>
-			<li><a href="cart_list.html">我的购物车</a></li>
-			<li><a href="tradequery.html">交易查询</a></li>
-			<li><a href="send_notes.html">送货说明</a></li>
-			<li><a href="" class="nouseful">&nbsp;</a></li>
-		</ul>
-	</div>
-	<div id="banner"></div>
-	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
-				<img src="../image/ico_site.jpg"  id="ico_site"/>
+				<img src="{{ url_for('static', filename = 'web/image/ico_site.jpg') }}"  id="ico_site"/>
 				网站路径：<a href="home.html">首页</a>&gt;&gt;<a href="#">商品详细信息</a>
 			</div>
 			{% include 'web/quick_search.html' %} 
@@ -54,14 +25,14 @@
           <td>会员价：￥{{ item.price * item.discount }}</td>
 		  <td>节省：￥{{ item.price * (1 - item.discount) }}</td>
 		  <td>库存量：{{ item.count }}</td>
-		  <td>用户评分：<img src="{{ url_for('static', filename = 'image/4star.JPG') }}" alt="喜欢" class="picture"></td>
+		  <td>用户评分：<img src="{{ url_for('static', filename = 'web/image/4star.JPG') }}" alt="喜欢" class="picture"></td>
         </tr>
 		<tr>
 		  <td></td>
           <td></td>
 		  <td></td>
 		  <td></td>
-		<td><a href="comment_list.htm"><a href="comment_list.html">【查看用户评论】</a><br><a href="comment_add.html">【参与评论】</a></td>
+		<td><a href="comment_list.htm"><a href="/comment_list/{{ item.id }}">【查看用户评论】</a><br><a href="/add_comment/{{ item.id }}">【参与评论】</a></td>
 		</tr>
 				 </tbody>
 		<tfoot>
@@ -72,20 +43,17 @@
 		  <td>
 		</td>
 		  <td>
-		  <a href="cart_list.html"><img src="{{ url_for('static', filename = 'image/goumai.gif') }}" alt="购买" class="picture"></a>&nbsp;
-		<a href="favorite.html"><img src="{{ url_for('static',filename = 'image/put_to_collection.gif') }}" alt="收藏" class="picture"></a>
+		  {% if item.count > 0 %}
+		  <a href="/add_to_cart/{{ item.id }}"><img src="{{ url_for('static', filename = 'web/image/goumai.gif') }}" alt="购买" class="picture"></a>&nbsp;
+		  {% else %}
+		  <span style="font-size:12px;">暂时无法购买</span>
+		  {% endif %}
+		<a href="/collect/{{ item.id }}"><img src="{{ url_for('static',filename = 'web/image/put_to_collection.gif') }}" alt="收藏" class="picture"></a>
 			</td>
 		</tr>
 		</tfoot>
             </table>	
 			</div>
 		</div>
-		
-	<div id="footer">
-		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
-		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
-	</div>
-</div>
 
-</body>
-</html>
+{% endblock %}

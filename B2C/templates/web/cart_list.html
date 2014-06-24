@@ -1,58 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-<title>BC2商城</title>
-<link href="{{ url_for('static', filename='web/css/frame.css') }}" rel="stylesheet" type="text/css">
-   </head>
-<script language="javascript" src="{{ url_for('static', filename='web/js/checkform.js') }}">
-</script>
-<body>
-<div id="container">
-	<div id="logalleft">
-		<div id="logalright">
-		<a href="register.html" target="_parent">[注册&nbsp;</a>] | 
-		<a href="" target="_parent">王小静 已登录| 
-		<a href="user_edit.html" target="_parent">个人信息维护</a> | 
-		<a href="address_daohang.html" target="_parent">地址簿</a> |
-	 	<a href="home_nologin.html" target="_parent">退出</a>
-		</div>
-	</div>
-	<div id="globallink">
-		<ul>
-			<li><a href="home.html">首页</a></li>
-			<li><a href="credit_query.html">积分查询</a></li>
-			<li><a href="item_search.html">商品搜索</a></li>
-			<li><a href="favorite.html" >收藏夹</a></li>
-			<li><a href="cart_list.html">我的购物车</a></li>
-			<li><a href="tradequery.html">交易查询</a></li>
-			<li><a href="send_notes.html">送货说明</a></li>
-			<li><a href="" class="nouseful">&nbsp;</a></li>
-		</ul>
-	</div>
-	<div id="banner"></div>
-	<div id="main">
+{% extends "web/layout.html" %}
+{% block main %}
+
 		<div id="search2">
 			<div id="searchleft">
-				<img src="../image/ico_site.jpg" id="ico_site"/>
-				网站路径：<a href="home.html">首页</a>&gt;&gt;<a href="#">购物车</a>			</div>
-			<div id="searchright2">
-			  <input type="text" name="product" id="textInput"/>
-			  <input type="button" name="Submit" value="搜索" id="searchbutton" onClick="javascript:window.open('item_search_list.html','_parent','')">
+				<img src="{{ url_for('static', filename = 'web/image/ico_site.jpg') }}" id="ico_site"/>
+				网站路径：<a href="home.html">首页</a>&gt;&gt;<a href="#">购物车</a>			
 			</div>
-			<div id="searchright1">
-			  <select name="category" id="searchrightcategory">
-				<option value="5">所有类别</option>
-                <option value="1">图书音像</option>
-                <option value="2">时尚生活</option>
-                <option value="3">饰品配件</option>
-                <option value="4">数码产品</option>
-              </select>
-		  </div>
+			{% include 'web/quick_search.html' %} 
 		</div>
 		<div id="sendnote">
 			<div id="sendnotehead"><strong>购物车内的商品</strong></div>
 			<div id="sendnotecontent">
-			<form action="" method="post" enctype="multipart/form-data" name="form1">
+			<form action="/update_cart_list" method="post" name="form1" onsubmit="checkitemno()">
 				<table id="favorite">
 				<thead>
 					<tr>
@@ -66,36 +25,27 @@
 					</tr>
 				</thead>
 				<tbody>
+				{% for item in cart_list %}
 				  <tr>
-            		<td>
-						1					</td>
+            		<td>{{ cart_list.index(item) }}
+            		</td>
 					<td>
-						<a href="item_info.html">大学物理学.第四册：波动与光学（第2版）</a>					</td>
-					<td>￥10.00</td>
+						<a href="item_info.html">{{ item.item_name }}</a>					
+					</td>
+					<td>￥{{ item[0].price }}
+					</td>
 					<td>
-						￥8.50					</td>
+						￥{{ item[0].price * item[0].discount }}					
+					</td>
 					<td>
-						￥1.50					</td>
+						￥{{ item[0].price * (1 - item[0].discount) }}
+					</td>
 					<td>
-						<input type="text" name="itemNo1" class="smallinputext" value="1"></td>
+						<input type="text" name="item{{ item[0].id }}" class="smallinputext" value="{{ item[1] }}"></td>
 					<td>
-						<a href="favorite.html"><img src="../image/collection.gif"  class="picture"/></a>&nbsp;<a href="#" onClick="window.confirm('确定删除？')"><img src="../image/delete_item.gif" class="picture"/></a></td>
+						<a href="/collect/{{ item[0].id }}"><img src="{{ url_for('static', filename = 'web/image/collection.gif') }}"  class="picture"/></a>&nbsp;<a href="/remove_cart_item/{{ item[0].id }}" onClick="window.confirm('确定删除？')"><img src="{{ url_for('static', filename = 'web/image/delete_item.gif') }}" class="picture"/></a></td>
           		  </tr>
-				  <tr>
-            		<td>
-						2					</td>
-					<td>
-					<a href="item_info.html">大学物理学.第一册：力学（第2版）</a></td>
-					<td> 
-						￥16.00					</td>
-					<td>
-						￥13.60					</td>
-					<td>
-						￥2.40					</td>
-					<td><input type="text" name="itemNo2" class="smallinputext" value="1">			</td>
-					<td>
-						<a href="favorite.html"><img src="../image/collection.gif"  class="picture"/></a>&nbsp;<a href="#" onClick="window.confirm('确定删除？')"><img src="../image/delete_item.gif" class="picture"/></a></td>
-					</tr>
+          		 {% endfor %}
 					<tr>
             		<td>
 					</td>
@@ -109,8 +59,8 @@
 					</td>
 					<td></td>
 					<td>
-						<input type="button" name="continue" value="继续购物" onClick="javascript:window.location.href='home.html'">&nbsp;
-		     <input type="button" name="edit2" value="更新" onClick="checkitemno()">					  					</td>
+						<input type="button" name="continue" value="继续购物" onClick="javascript:window.location.href='/'">&nbsp;
+		     <input type="submit" name="edit2" value="更新">					  					</td>
 					</tr>
 					<tr>
             			<td></td>
@@ -120,19 +70,12 @@
 						<td></td>
 						<td></td>
 					<td>
-					<a href="account_check.html"><img src="../image/check_account.gif" class="picture"/></a>				  					</td>
+					<a href="account_check.html"><img src="{{ url_for('static', filename = 'web/image/check_account.gif') }}" class="picture"/></a>				  					</td>
 					</tr>
 				 </tbody>
             </table>
 			</form> 
 			</div>
 		</div>
-		
-	<div id="footer">
-		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
-		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
-	</div>
-</div>
 
-</body>
-</html>
+{% endblock %}

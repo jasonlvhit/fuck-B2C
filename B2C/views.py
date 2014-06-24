@@ -8,7 +8,7 @@ from functools import wraps
 from werkzeug import check_password_hash, generate_password_hash, secure_filename
 from flask import Flask, g, url_for, redirect, flash, render_template, session, _app_ctx_stack, request
 
-from B2C import db, app
+from B2C import db, app, json_decoder, json_encoder
 from models import User, Comment, Item, Address, Order, Directory, TopDirectory, Admin, CreditRequirement, order_item_re, user_collection_re
 
 
@@ -166,6 +166,7 @@ def login():
         else:
             flash('You were logged in')
             session['user_id'] = user.id
+            session['cart_list'] = ""
             return redirect(url_for('index'))
     return render_template('web/login.html', error=error)
 
@@ -196,7 +197,7 @@ def register():
             error = 'The email is already taken'
         else:
             user = User(request.form['username'], request.form[
-                        'email'], generate_password_hash(request.form['password']))
+                        'email'], generate_password_hash(request.form['password']), datetime.now())
             db.session.add(user)
             db.session.commit()
             flash('You were successfully registered and can login now')
@@ -231,6 +232,7 @@ def do_find_password():
     email_address = request.form['email']
     new_password = str(random.randint(100000, 999999))
     g.user.pw_hash = generate_password_hash(new_password)
+    db.session.commit()
     send_email(email_address, "Retrive Password", "Your new password is " + new_password)
     flash("Mail sent!")
 
@@ -248,9 +250,52 @@ def send_email(to_email_address, subject, text):
     server.login("b1123710410@ssmail.hit.edu.cn", "BENKE")
     try:
         server.sendmail('b1123710410@ssmail.hit.edu.cn', [to_email_address], msg.as_string())
-       
     finally:
         server.quit()
+        
+@app.route('/show_cart_list')
+@login_required
+def show_cart_list():
+    cart_list = []
+    if session['cart_list'] != "":
+        d = json_decoder.decode(session['cart_list'])
+        for item_id, count in d.iteritems():
+            item = Item.query.get(item_id)
+            cart_list.append((item, count))
+
+    return render_template('web/cart_list.html', cart_list=cart_list)
+
+
+@app.route('/add_to_cart/<int:item_id>')
+@login_required
+def add_to_cart(item_id):
+    d = {}
+    if session['cart_list'] != "":
+        d = json_decoder.decode(session['cart_list'])
+    d[item_id] = 1
+    session['cart_list'] = json_encoder.encode(d)
+    # Remove same ids
+    flash("Added to cart!")
+    return redirect('/show_cart_list')
+
+@app.route('/remove_cart_item/<int:item_id>')
+@login_required
+def remove_cart_item(item_id):
+    d = json_decoder.decode(session['cart_list'])
+    d.pop(unicode(item_id))
+    session['cart_list'] = json_encoder.encode(d)
+
+    return redirect('/show_cart_list')
+
+@app.route('/update_cart_list', methods=['POST'])
+def update_cart_list():
+    d = json_decoder.decode(session['cart_list'])
+    for id, count in d.iteritems():
+        count = request.form['item'+str(id)]
+        d[id] = count
+
+    session['cart_list'] = json_encoder.encode(d)
+    return redirect('/show_cart_list')
 
 @app.route("/query_credit")
 @login_required
@@ -425,7 +470,7 @@ def collect(id):
     r = db.session.execute(user_collection_re.insert(), {'user_id':g.user.id,'item_id':id, 'date':datetime.now()})
     if r.is_insert:
         db.session.commit()
-    return redrict(url_for('collection'))
+    return redirect(url_for('collection'))
 
 @app.route('/collection')
 @login_required
@@ -436,7 +481,7 @@ def collection():
 @login_required
 def remove_from_collection(id):
     assert request.method == 'GET'
-    db.session.execute(models.user_collection_re.delete(), {'item_id':id, 'user_id':g.user.id})
+    db.session.execute(user_collection_re.delete(), {'item_id':id, 'user_id':g.user.id})
     db.session.commit()
     return redirect(url_for('collection'))
 
@@ -480,7 +525,7 @@ def query_user():
 @app.route('/remove_user/<int:user_id>', method = 'GET')
 def remove_user(user_id):
     u = User.query.filter_by(id = user_id).first()
-    db.session.add(u)
+    db.session.delete(u)
     sb.session.commit()
     return redirect(url_for('manage_user'))
 

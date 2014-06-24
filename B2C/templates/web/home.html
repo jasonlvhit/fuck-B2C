@@ -9,6 +9,7 @@
 <div id="container">
 	<div id="logalleft">
 		<div id="logalright">
+		
 		{% if g.user %} 
 		  <span style="font-size:12px;" target="_parent">{{ g.user.username }} 已登录|</span>
 		  <a href="/logout" target="_parent">退出</a>|
@@ -43,7 +44,7 @@
 			<h4><span>{{ dir.dir_name }}</span></h4>
 			<ul>
 				{% for i in dir.kids %}
-					<li><a href="{{ url_for('item_list', cate_id = i.id ) }}">{{ i.dir_name }}</a></li>
+					<li><a href="/item_info/{{ i.id }}">{{ i.dir_name }}</a></li>
 				{% endfor %}
 			</ul>
 			{% endfor %}
