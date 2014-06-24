@@ -3,8 +3,8 @@
 	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
-				<img src="../image/ico_site.jpg"  id="ico_site"/>
-				网站路径：<a href="home.html">首页</a>&gt;&gt;<a href="item_info.html">商品信息</a>&gt;&gt;<a href="">添加评论</a>
+				<img src="{{ url_for('static', filename = 'web/image/ico_site.jpg') }}"  id="ico_site"/>
+				网站路径：<a href="/">首页</a>&gt;&gt;<a href="">商品信息</a>&gt;&gt;<a href="">添加评论</a>
 			</div>
 			{% include "web/quick_search.html" %}
 		</div>
