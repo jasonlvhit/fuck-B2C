@@ -522,7 +522,7 @@ def query_user():
 
     return render_template('back/user_list.html', users = users, cre = tmp)
 
-@app.route('/remove_user/<int:user_id>', method = 'GET')
+@app.route('/remove_user/<int:user_id>', methods = ['GET'])
 def remove_user(user_id):
     u = User.query.filter_by(id = user_id).first()
     db.session.delete(u)
