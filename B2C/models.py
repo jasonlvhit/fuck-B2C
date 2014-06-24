@@ -24,6 +24,7 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=False)
     email = db.Column(db.String(80), unique=True)
     pw_hash = db.Column(db.Text)
+    register_date = db.Column(db.DateTime)
 
     consumption = db.Column(db.Float)
     points = db.Column(db.Integer)
@@ -36,10 +37,11 @@ class User(db.Model):
     comments = db.relationship('Comment', backref = 'user', lazy = 'dynamic')
     collections = db.relationship('Item', secondary=user_collection_re, backref=db.backref('user', lazy='dynamic'))
 
-    def __init__(self, username, email, pw_hash, consumption=0, points=0):
+    def __init__(self, username, email, pw_hash, register_date, consumption=0, points=0):
         self.username = username
         self.email = email
         self.pw_hash = pw_hash
+        self.register_date = register_date
         self.points = 0
         self.consumption = 0
 

@@ -1,4 +1,4 @@
-{% extends "back/layout.html %}
+{% extends "back/layout.html" %}
 {% block body %}
       <div id="main">
         <div id="search2">
@@ -101,19 +101,19 @@
         <div id="double2">
           <div id="doublehead2"><strong>会员查询</strong></div>
           <div id="doublecontent2">
-            <form>
+            <form action = "{{ url_for('query_user') }}" method = 'post'>
               <table width="100%">
                 <tr>
                   <td width="3%" class="inputHeader">&nbsp;</td>
-                  <td width="16%" class="inputHeader">会员号：</td>
+                  <td width="16%" class="inputHeader">nickname：</td>
                   <td width="39%" class="inputContent"><input type="Text" name="name" onFocus="nextfield='password'" value="" maxlength="15" size="15">              </td>
                   <td width="42%" class="inputContent">&nbsp;</td>
                 </tr>
                 <tr>
                   <td class="inputHeader">&nbsp;</td>
                   <td class="inputHeader">会员级别：</td>
-                  <td class="inputContent"><select name="select">
-                    <option value="5">所有会员</option>
+                  <td class="inputContent"><select name="level">
+                    <option value="0">所有会员</option>
                     <option value="1">普通会员</option>
                     <option value="2">银卡</option>
                     <option value="3">金卡</option>
@@ -124,28 +124,28 @@
                 <tr>
                   <td class="inputHeader">&nbsp;</td>
                   <td width="16%" class="inputHeader">注册起始时间：</td>
-                  <td width="39%" class="inputContent"><select name="year">
-                    <option>2007</option>
-                    <option>2006</option>
+                  <td width="39%" class="inputContent"><select name="lower_year">
+                    <option value = '2007'>2007</option>
+                    <option value = '2006'>2006</option>
                   </select>
                   &nbsp;&nbsp;年&nbsp;&nbsp;
-                  <select name="month">
-                    <option>01</option>
-                    <option>02</option>
-                    <option>03</option>
-                    <option>04</option>
-                    <option>05</option>
-                    <option>06</option>
+                  <select name="lower_month">
+                    <option value = '1'>01</option>
+                    <option value = '2'>02</option>
+                    <option value = '3'>03</option>
+                    <option value = '4'>04</option>
+                    <option value = '5'>05</option>
+                    <option value = '6'>06</option>
                   </select>
                   &nbsp;&nbsp;
                   月&nbsp;&nbsp;
-                  <select name="day">
-                    <option>01</option>
-                    <option>02</option>
-                    <option>03</option>
-                    <option>04</option>
-                    <option>05</option>
-                    <option>06</option>
+                  <select name="lower_day">
+                    <option value = '1'>01</option>
+                    <option value = '2'>02</option>
+                    <option value = '3'>03</option>
+                    <option value = '4'>04</option>
+                    <option value = '5'>05</option>
+                    <option value = '6'>06</option>
                   </select>
                 &nbsp;&nbsp;日 </td>
                 <td class="inputContent">&nbsp;</td>
@@ -153,28 +153,27 @@
               <tr>
                 <td class="inputHeader">&nbsp;</td>
                 <td class="inputHeader">注册结束时间：</td>
-                <td class="inputContent"><select name="year">
-                  <option>2007</option>
-                  <option>2006</option>
+                <td class="inputContent"><select name="upper_year">
+                  <option value = "2015">2015</option>
                 </select>
                 &nbsp;&nbsp;年&nbsp;&nbsp;
-                <select name="month">
-                  <option>01</option>
-                  <option>02</option>
-                  <option>03</option>
-                  <option>04</option>
-                  <option>05</option>
-                  <option>06</option>
+                <select name="upper_month">
+                  <option value = '1'>01</option>
+                  <option value = '2'>02</option>
+                  <option value = '3'>03</option>
+                  <option value = '4'>04</option>
+                  <option value = '5'>05</option>
+                  <option value = '6'>06</option>
                 </select>
                 &nbsp;&nbsp;
                 月&nbsp;&nbsp;
-                <select name="day">
-                  <option>01</option>
-                  <option>02</option>
-                  <option>03</option>
-                  <option>04</option>
-                  <option>05</option>
-                  <option>06</option>
+                <select name="upper_day">
+                  <option value = '1'>01</option>
+                  <option value = '2'>02</option>
+                  <option value = '3'>03</option>
+                  <option value = '4'>04</option>
+                  <option value = '5'>05</option>
+                  <option value = '6'>06</option>
                 </select>
               &nbsp;&nbsp;日 </td>
               <td class="inputContent">&nbsp;</td>
@@ -185,7 +184,7 @@
               <td width="4%" class="inputContent">&nbsp;</td>
               <td width="17%" class="inputHeader">&nbsp;</td>
               <td width="39%" class="inputContent">
-                <strong> <input type="Button" class="bt2" name="button222" value="查询" onClick="javascript:window.location.href='user_list.html'"></strong>&nbsp;&nbsp;
+                <strong> <input type="submit" class="bt2" name="button222" value="查询"></strong>&nbsp;&nbsp;
                 <input type="Reset" class="bt2" name="button1" value="重填" onClick="clear()">
               &nbsp; </td>
               <td width="40%" class="inputContent">&nbsp;</td>

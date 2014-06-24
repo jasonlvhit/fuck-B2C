@@ -440,6 +440,21 @@ def remove_from_collection(id):
     db.session.commit()
     return redirect(url_for('collection'))
 
+@app.route('/query_user', methods = ['POST'])
+def query_user():
+    assert request.method == 'POST'
+    
+    level = request.form['level']
+    lower_year = request.form['lower_year']
+    lower_month = request.form['lower_month']
+    lower_day = request.form['lower_day']
+    upper_year = request.form['upper_year']
+    upper_month = request.form['upper_month']
+    upper_day = request.form['upper_day']
+
+    
+
+
 
 
 
