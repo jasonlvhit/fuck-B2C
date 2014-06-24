@@ -164,16 +164,15 @@ function checkaddressnew() {
 
 function checkcommentform() {
 	var k = 0;
-	for (i = 0; i < document.form1.radiobutton.length; i++) {
-		if (document.form1.radiobutton[i].checked)
-			k = 1;
+	var radio_checked = false;
+	radios = document.getElementsByName('like');
+	for (i = 0; i < radios.length ; i++) {
+		if (radios[i].checked ) {
+			return true
+		}
 	}
-	if (k === 0) {
-		window.alert("请打分！");
-		return false;
-	} else {
-		return true;
-	}
+	window.alert("请打分！");
+	return false;
 
 }
 
