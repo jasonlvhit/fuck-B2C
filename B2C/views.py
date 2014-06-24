@@ -167,6 +167,8 @@ def login():
             flash('You were logged in')
             session['user_id'] = user.id
             session['cart_list'] = ""
+            session['credit'] = 0
+            session['address'] = Address.query.first().id
             return redirect(url_for('index'))
     return render_template('web/login.html', error=error)
 
@@ -527,3 +529,59 @@ def remove_user(user_id):
     # try
     db.session.commit()
     return redirect(url_for('manage_user'))
+
+def _get_credit_percent():
+    tmp = CreditRequirement.query.first()
+    if g.user.points >= tmp.normal:
+        return tmp.normal_percent
+    elif g.user.points >= tmp.silver:
+        return tmp.silver_percent
+    elif g.user.points >= tmp.gold:
+        return tmp.gold_percent
+    elif g.user.points >= pt:
+        return tmp.pt_percent
+    else:
+        return 1.0
+
+@app.route('/order_confirm', methods = ['GET'])
+def order_confirm():
+    
+    address = Address.query.get(session['address'])
+    if address.is_local:
+        deliver = 5
+    else:
+        deliver = 10
+
+    cart_list = []
+    total = 0
+    if session['cart_list'] != "":
+        d = json_decoder.decode(session['cart_list'])
+        for item_id, count in d.iteritems():
+            item = Item.query.get(item_id)
+            total = total + (item.price * item.discount)
+            cart_list.append((item, count))
+
+    return render_template('web/order_confirm.html', cart_list = cart_list, address = address, 
+        total = total, deliver = deliver, credit = _get_credit_percent())
+
+@app.route('/set_credit', methods = ['POST'])
+def set_credit():
+    assert request.method == 'POST'
+    session['credit'] = request.form['credit']
+    return redirect(url_for('order_confirm'))
+
+@app.route('/submit_order', methods = ['POST'])
+def submit_order():
+    order = Order(datetime.now(), g.user.id, session['address'], request.form['total'], request.form['points'])
+    if session['cart_list'] != "":
+        d = json_decoder.decode(session['cart_list'])
+        for item_id, count in d.iteritems():
+            db.session.execute(order_item_re.insert(), { 'item_id':item_id ,'order_id': order.id})
+            db.session.commit()
+            order.count = order.count + str(count) + '|'
+
+    db.session.add(order)
+    db.session.commit()
+    return render_template("web/order_success.html", total = request.form['total'])
+    
+

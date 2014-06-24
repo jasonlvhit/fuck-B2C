@@ -83,6 +83,10 @@ class Order(db.Model):
     date = db.Column(db.DateTime)
     status = db.Column(db.Integer)  # 0:wait for pay 1:pay 2:done
     deliver_method = db.Column(db.Integer)  # 0: 1:
+    is_confirm = db.Column(db.Boolean)
+    points = db.Column(db.Integer)
+    total = db.Column(db.Float)
+    count = db.Column(db.String(10000))
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -91,13 +95,17 @@ class Order(db.Model):
     items = db.relationship(
         'Item', secondary=order_item_re, backref=db.backref('orders', lazy='dynamic'))
 
-    def __init__(self, date, user_id, address, items=None, status=0, deliver_method=0):
+    def __init__(self, date, user_id, address_id, total, points = 0, status=0, deliver_method=0, is_confirm = False, count = '0'):
+        
         self.date = date
         self.user_id = user_id
-        self.address = address
-        self.items = items
+        self.address_id = address_id
         self.status = status
+        self.points = points
         self.deliver_method = deliver_method
+        self.is_confirm = is_confirm
+        self.total = total
+        self.count = count
 
 
 class Item(db.Model):
