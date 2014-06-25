@@ -90,7 +90,7 @@ else
             {% for k in l.kids.all() %}
               <tr>
                 <td width="4%" align="right" class="inputContent"><input type="checkbox" name="kid_cate" value="{{ k.id }}"></td>
-                <td width="92%" class="inputContent">{{ k.dir_name }}</td>
+                <td width="92%" class="inputContent"><a href="/item_list/{{ k.id }}">{{ k.dir_name }}</a></td>
             {% endfor %}
           </table></td>
         </tr>
