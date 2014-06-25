@@ -8,12 +8,14 @@ order_item_re = db.Table('order_items',
                              'order_id', db.Integer, db.ForeignKey('order.id'))
                          )
 
-user_collection_re = db.Table('collection', 
-    db.Column('id', db.Integer, primary_key = True),
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('item_id', db.Integer, db.ForeignKey('item.id')),
-    db.Column('date', db.DateTime)
-    )
+user_collection_re = db.Table('collection',
+                              db.Column('id', db.Integer, primary_key=True),
+                              db.Column(
+                                  'user_id', db.Integer, db.ForeignKey('user.id')),
+                              db.Column(
+                                  'item_id', db.Integer, db.ForeignKey('item.id')),
+                              db.Column('date', db.DateTime)
+                              )
 
 
 class User(db.Model):
@@ -34,8 +36,9 @@ class User(db.Model):
 
     # order
     orders = db.relationship('Order', backref='user', lazy='dynamic')
-    comments = db.relationship('Comment', backref = 'user', lazy = 'dynamic')
-    collections = db.relationship('Item', secondary=user_collection_re, backref=db.backref('user', lazy='dynamic'))
+    comments = db.relationship('Comment', backref='user', lazy='dynamic')
+    collections = db.relationship(
+        'Item', secondary=user_collection_re, backref=db.backref('user', lazy='dynamic'))
 
     def __init__(self, username, email, pw_hash, register_date, consumption=0, points=0):
         self.username = username
@@ -95,8 +98,8 @@ class Order(db.Model):
     items = db.relationship(
         'Item', secondary=order_item_re, backref=db.backref('orders', lazy='dynamic'))
 
-    def __init__(self, date, user_id, address_id, total, points = 0, status=0, deliver_method=0, is_confirm = False, count = '0'):
-        
+    def __init__(self, date, user_id, address_id, total, points=0, status=0, deliver_method=0, is_confirm=False, count='0'):
+
         self.date = date
         self.user_id = user_id
         self.address_id = address_id
@@ -114,7 +117,7 @@ class Item(db.Model):
     __tablename__ = 'item'
     id = db.Column(db.Integer, primary_key=True)
     item_name = db.Column(db.String, unique=False)
-    description = db.Column(db.Text, unique = False)
+    description = db.Column(db.Text, unique=False)
     image = db.Column(db.Text)  # file path
     price = db.Column(db.Float)
     discount = db.Column(db.Float)
@@ -125,7 +128,7 @@ class Item(db.Model):
 
     cate_id = db.Column(db.Integer, db.ForeignKey('directory.id'))
 
-    def __init__(self, item_name, description, price, discount=1.0, count=0, cate_id = 0, sales=0, image = ''):
+    def __init__(self, item_name, description, price, discount=1.0, count=0, cate_id=0, sales=0, image=''):
         self.item_name = item_name
         self.description = description
         self.price = price
@@ -134,7 +137,6 @@ class Item(db.Model):
         self.sales = sales
         self.cate_id = cate_id
         self.image = image
-
 
     def consume(self, num=0):
         self.count = self.count - num
@@ -184,7 +186,7 @@ class Directory(db.Model):
         self.parents_id = parent_id
 
     def __repr__(self):
-        return '<Directory %r>' %self.dir_name
+        return '<Directory %r>' % self.dir_name
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -205,7 +207,7 @@ class TopDirectory(db.Model):
         self.image_path = image_path
 
     def __repr__(self):
-        return '<TopDirectory %r>' %self.dir_name
+        return '<TopDirectory %r>' % self.dir_name
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -223,30 +225,30 @@ class Admin(db.Model):
 
     def __repr__(self):
         pass
-        
-        
+
+
 class CreditRequirement(db.Model):
-	__tablename__ = 'credit_limit'
-	id = db.Column(db.Integer, primary_key = True)
-	normal = db.Column(db.Integer)
-	silver = db.Column(db.Integer)
-	gold = db.Column(db.Integer)
-	pt = db.Column(db.Integer)
+    __tablename__ = 'credit_limit'
+    id = db.Column(db.Integer, primary_key=True)
+    normal = db.Column(db.Integer)
+    silver = db.Column(db.Integer)
+    gold = db.Column(db.Integer)
+    pt = db.Column(db.Integer)
 
-	normal_percent = db.Column(db.Integer)
-	silver_percent = db.Column(db.Integer)
-	gold_percent = db.Column(db.Integer)
-	pt_percent = db.Column(db.Integer)
-	
-	def __init__(self, normal, silver, gold, pt, normal_percent, silver_percent, gold_percent, pt_percent):
-		self.normal = normal
-		self.silver = silver
-		self.gold = gold
-		self.pt = pt
-		self.normal_percent = normal_percent
-		self.silver_percent = silver_percent
-		self.gold_percent = gold_percent
-		self.pt_percent = pt_percent
+    normal_percent = db.Column(db.Integer)
+    silver_percent = db.Column(db.Integer)
+    gold_percent = db.Column(db.Integer)
+    pt_percent = db.Column(db.Integer)
 
-	def __repr__(self):
-		pass
+    def __init__(self, normal, silver, gold, pt, normal_percent, silver_percent, gold_percent, pt_percent):
+        self.normal = normal
+        self.silver = silver
+        self.gold = gold
+        self.pt = pt
+        self.normal_percent = normal_percent
+        self.silver_percent = silver_percent
+        self.gold_percent = gold_percent
+        self.pt_percent = pt_percent
+
+    def __repr__(self):
+        pass
