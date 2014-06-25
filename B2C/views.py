@@ -432,7 +432,7 @@ def edit_dir():
 
     if request.method == 'POST':
         if 'remove' in request.form:
-            if request.form['cate']:
+            if 'cate' in request.form:
                 a = TopDirectory.query.filter_by(id = request.form['cate']).first()
                 db.session.delete(a)
                 db.session.commit()
@@ -443,7 +443,7 @@ def edit_dir():
             db.session.commit()
             return redirect(url_for('edit_dir'))
             
-        if request.form['cate']:
+        if 'cate' in request.form:
             a = TopDirectory.query.filter_by(id = request.form['cate']).first()
             return redirect(url_for('add_dir', origin_info_set = a.as_dict(), top = True))
         a = Directory.query.filter_by(id = request.form['kid_cate']).first()
