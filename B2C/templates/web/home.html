@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>BC2商城</title>
-<link href="{{ url_for('static', filename='web/css/frame.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static', filename='web/css/home.css') }}" rel="stylesheet" type="text/css">
    </head>
 
 <body>
@@ -38,23 +38,26 @@
 	<div id="banner"></div>
 	<div id="left">
 		<div id="category">
-			<h3>dir list </h3>
 			{% for dir in g.top_dir %}
 
 			<h4><span>{{ dir.dir_name }}</span></h4>
 			<ul>
 				{% for i in dir.kids %}
-					<li><a href="/item_info/{{ i.id }}">{{ i.dir_name }}</a></li>
+					<li><a href="/user_item_list/{{ i.id }}">{{ i.dir_name }}</a></li>
 				{% endfor %}
 			</ul>
 			{% endfor %}
         </div>
 	</div>
 	<div id="main">
+		<div id="search1">
+			<div id="searchleft">
+				<img src="{{ url_for('static', filename='web/image/ico_site.jpg') }}" id="ico_site"/>网站路径：<a href="home.html">首页</a>	
+			</div>
 		{% include 'web/quick_search.html' %} 
+		</div>
 		
-		
-		<div id="recommend">
+		<div id="recommend" style="background:url({{ url_for('static', filename='web/image/recommend2.jpg') }}) no-repeat;">
 			<ul>
 				<li><a href="item_info.html"><img src="../image/dxwl4.jpg"><br><span class="inputHeader">大学物理学.第四册：<br>波动与光学(第2版)<br>
 	     <strong>￥8.50</strong> 85折</span></li>
@@ -102,6 +105,7 @@
 			<br>&nbsp;
 		</div>
 	</div>
+</div>
 	<div id="footer">
 		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
 		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
