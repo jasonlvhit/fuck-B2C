@@ -792,7 +792,7 @@ def credit_query():
 
 
 @app.route('/salesdata_admin')
-@login_required
+@admin_required
 def sales_data():
     return render_template('back/salesdata_admin.html')
 
