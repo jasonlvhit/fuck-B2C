@@ -259,6 +259,13 @@ def edit_profie():
     return render_template('web/user_edit.html')
 
 
+@app.route('/user_item_list/<int:cate_id>')
+def user_item_list(cate_id):
+    cate = Directory.query.get(cate_id)
+    cate_name = cate.dir_name
+    items = Item.query.filter_by(cate_id=cate_id).all()
+    return render_template("web/item_list.html", cate_name=cate_name, items=items, cate_id=cate_id)
+
 @app.route("/do_edit_profile", methods=['POST'])
 def do_edit_profile():
     if not check_password_hash(g.user.pw_hash, request.form['passwordold']):
@@ -554,8 +561,10 @@ def allowed_file(filename):
 
 @app.route('/item_list/<int:cate_id>')
 def item_list(cate_id):
+    cate = Directory.query.get(cate_id)
+    cate_name = cate.dir_name
     items = Item.query.filter_by(cate_id=cate_id).all()
-    return render_template("back/item_list.html", items=items, cate_id=cate_id)
+    return render_template("back/item_list.html", cate_name=cate_name, items=items, cate_id=cate_id)
 
 
 @app.route('/add_item', methods=['POST'])
@@ -793,7 +802,7 @@ def sales_data():
 def do_salesdata():
     assert request.method == 'POST'
 
-    cate_id = request.form['category']
+    top_dir_id = request.form['category']
     lower_year = request.form['lower_year']
     lower_month = request.form['lower_month']
     lower_day = request.form['lower_day']
@@ -811,22 +820,25 @@ def do_salesdata():
     items = {}
     total = 0
 
+    items_id = []
+
+    if top_dir_id != "":
+        t_dir = TopDirectory.query.get(top_dir_id)
+        items_id = [i.id for i in t_dir.kids]
+
     for order in orders:
         for item in order.items:
-            if cate_id != '' and item.cate_id == int(cate_id):
+            if  items_id and item.cate_id in items_id:
+                if item not in items:
+                    items[item] = int(order.count.split('|')[order.items.index(item)])
+                else:
+                    items[item] = items[item] + int(order.count.split('|')[order.items.index(item)])
+            elif not items_id:
                 if item not in items:
                     items[item] = int(
                         order.count.split('|')[order.items.index(item)])
                 else:
-                    items[item] = int(
-                        items[item] + order.count.split('|')[order.items.index(item)])
-            else:
-                if item not in items:
-                    items[item] = int(
-                        order.count.split('|')[order.items.index(item)])
-                else:
-                    items[item] = int(
-                        items[item] + order.count.split('|')[order.items.index(item)])
+                    items[item] = items[item] + int(order.count.split('|')[order.items.index(item)])
 
     for i in items:
         total += int(items[i]) * i.price
