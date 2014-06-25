@@ -119,17 +119,19 @@ class Item(db.Model):
     price = db.Column(db.Float)
     discount = db.Column(db.Float)
     count = db.Column(db.Integer)
+    sales = db.Column(db.Integer)
 
     comments = db.relationship('Comment', backref='item', lazy='dynamic')
 
     cate_id = db.Column(db.Integer, db.ForeignKey('directory.id'))
 
-    def __init__(self, item_name, description, price, discount=1.0, count=0, cate_id = 0):
+    def __init__(self, item_name, description, price, discount=1.0, count=0, cate_id = 0, sales=0):
         self.item_name = item_name
         self.description = description
         self.price = price
         self.discount = discount
         self.count = count
+        self.sales = sales
         self.cate_id = cate_id
 
 

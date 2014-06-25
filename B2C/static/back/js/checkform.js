@@ -121,17 +121,15 @@ function checkordercheck() {
 
 function checkorderselect() {
 	var k = 0;
-	for (i = 0; i < document.form1.ordersn.length; i++) {
-		if (document.form1.ordersn[i].checked)
-			k = 1;
+	var radio_checked = false;
+	radios = document.getElementsByName('order_id');
+	for (i = 0; i < radios.length ; i++) {
+		if (radios[i].checked ) {
+			return true
+		}
 	}
-	if (k === 0) {
-		window.alert("请选择要审核的订单！");
-		return false;
-	} else {
-		window.location.href = "order_check.html";
-	}
-
+	window.alert("请选择订单！");
+	return false;
 }
 
 function checkitemrefresh() {

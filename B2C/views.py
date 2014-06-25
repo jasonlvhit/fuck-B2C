@@ -15,9 +15,12 @@ from models import User, Comment, Item, Address, Order, Directory, TopDirectory,
 @app.before_request
 def before_request():
     g.user = None
+    g.admin = None
     if 'user_id' in session:
         g.user = User.query.filter_by(id=session['user_id']).first()
-
+    if 'admin_id' in session:
+        g.admin = Admin.query.filter_by(id=session['admin_id']).first()
+    g.top_dir = TopDirectory.query.all()
 
 @app.teardown_request
 def shutdown_session(exception=None):
@@ -33,13 +36,21 @@ def login_required(f):
     return decorated_function
 
 
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if g.admin is None:
+            return redirect(url_for('admin_login', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
 def get_user_id(email=None):
     return User.query.filter_by(email=email).first()
 
 
 @app.route("/")
 def index():
-    return render_template("web/home.html", top_dir = TopDirectory.query.all())
+    return render_template("web/home.html")
 
 #do the real search stuff
 def _search(keyword = None, cate_id = None, price_level = 0, discount_level = 0):
@@ -178,7 +189,10 @@ def login():
             session['user_id'] = user.id
             session['cart_list'] = ""
             session['credit'] = 0
-            session['address'] = Address.query.first().id
+            if Address.query.first():
+                session['address'] =  Address.query.first().id
+            else:
+                session['address'] = 1
             return redirect(url_for('index'))
     return render_template('web/login.html', error=error)
 
@@ -309,12 +323,85 @@ def update_cart_list():
     session['cart_list'] = json_encoder.encode(d)
     return redirect('/show_cart_list')
 
+# Admin functions
+@app.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+    if g.admin:
+        return redirect(url_for('edit_dir'))
+    error = None
+    if request.method == 'POST':
+        admin = Admin.query.filter_by(admin_name=request.form['account']).first()
+        if admin is None:
+            error = 'Invalid account or password'
+        elif str(admin.pw_hash) != request.form['password']:
+            error = 'Invalid account or password'
+        else:
+            flash('You were logged in')
+            session['admin_id'] = admin.id
+            # g.admin = admin
+            return redirect(url_for('edit_dir'))
+
+    return render_template('back/home.html', error=error)
+
 # Manager user credit settings(Really? WTF?!)
 @app.route("/manage_user", methods=['GET', 'POST'])
+@admin_required
 def manage_user():
     credit_req = CreditRequirement.query.get(0)
     
     return render_template('back/user_admin.html', credit_req=credit_req)
+
+@app.route('/order_admin', methods=['GET', 'POST'])
+@admin_required
+def order_admin():
+    return render_template('back/order_admin.html')
+
+@app.route('/order_list', methods=['POST'])
+def order_list():
+    if request.method == 'POST':
+        loweryear = request.form['loweryear']
+        lowermonth = request.form['lowermonth']
+        lowerday = request.form['lowerday']
+        upperyear = request.form['upperyear']
+        uppermonth = request.form['uppermonth']
+        upperday = request.form['upperday']
+        lowerdate = '-'.join([loweryear, lowermonth, lowerday])
+        upperdate = '-'.join([upperyear, uppermonth, upperday])
+        if not request.form['order']:
+            if not request.form['user']:
+                orders = Order.query.filter(Order.date>=lowerdate,
+                                            Order.date<=upperdate).all()
+            else:
+                orders = Order.query.filter(Order.date>=lowerdate,
+                                            Order.date<=upperdate,
+                                            Order.user_id==request.form['user']).all()
+        else:
+            if not request.form['user']:
+                orders = Order.query.filter(Order.date>=lowerdate,
+                                        Order.date<=upperdate,
+                                        Order.id==request.form['order']).all()
+            else:
+                orders = Order.query.filter(Order.date>=lowerdate,
+                                        Order.date<=upperdate,
+                                        Order.id==request.form['order']).all()
+        email = []
+        for order in orders:
+            email.append(User.query.filter_by(id=order.user_id).first().email)
+
+    return render_template('back/order_list.html', orders=orders, email=email)
+
+@app.route("/order_approve", methods=['POST'])
+@admin_required
+def order_approve():
+    order_id = request.form['order_id']
+    order =  Order.query.get(order_id)
+    order.is_confirm = True;
+    for i in order.items:
+        i.sales += int(order.count.split('|')[order.items.index(i)])
+
+    db.session.commit()
+
+    return redirect('/')
 
 @app.route("/do_manage_user", methods=['POST'])
 def do_manage_user():
@@ -338,6 +425,7 @@ def do_manage_user():
 
 
 @app.route('/edit_dir', methods=['GET', 'POST'])
+@admin_required
 def edit_dir():
     error = None
 
@@ -360,10 +448,10 @@ def edit_dir():
         a = Directory.query.filter_by(id = request.form['kid_cate']).first()
         return redirect(url_for('add_dir', origin_info_set = a.as_dict()))
         
-        #return redirect(url_for("index"))
     return render_template('back/category_list.html', error=error,top_level=TopDirectory.query.all(), count=0)
 
 @app.route('/add_dir', methods=['POST', 'GET'])
+@admin_required
 def add_dir(origin_info_set='{}', top = False):
     if request.method == 'POST':
         top_level = False
@@ -493,6 +581,7 @@ def remove_from_collection(id):
     return redirect(url_for('collection'))
 
 @app.route('/query_user', methods = ['POST'])
+@admin_required
 def query_user():
     assert request.method == 'POST'
     
@@ -528,6 +617,7 @@ def query_user():
     return render_template('back/user_list.html', users = users, cre = tmp)
 
 @app.route('/remove_user/<int:user_id>', methods=['GET'])
+@admin_required
 def remove_user(user_id):
     u = User.query.filter_by(id = user_id).first()
     db.session.delete(u)
@@ -578,14 +668,14 @@ def set_credit():
 @app.route('/submit_order', methods = ['POST'])
 def submit_order():
     order = Order(datetime.now(), g.user.id, session['address'], request.form['total'], request.form['points'])
+    db.session.add(order)
+    db.session.commit()
     if session['cart_list'] != "":
         d = json_decoder.decode(session['cart_list'])
         for item_id, count in d.iteritems():
             db.session.execute(order_item_re.insert(), { 'item_id':item_id ,'order_id': order.id})
             db.session.commit()
             order.count = order.count + str(count) + '|'
-
-    db.session.add(order)
     db.session.commit()
     return render_template("web/order_success.html", total = request.form['total'])
 
@@ -597,7 +687,53 @@ def order_info(order_id):
     return render_template('web/order_info.html', order = order)
 
 @app.route('/credit_query')
+@login_required
 def credit_query():
     return render_template('web/credit_query.html', orders = g.user.orders.all(), points = g.user.points)
     
 
+@app.route('/salesdata_admin')
+@login_required
+def sales_data():
+    return render_template('back/salesdata_admin.html')
+
+@app.route('/do_salesdata', methods=['POST'])
+@admin_required
+def do_salesdata():
+    assert request.method == 'POST'
+    
+    cate_id = request.form['category']
+    lower_year = request.form['lower_year']
+    lower_month = request.form['lower_month']
+    lower_day = request.form['lower_day']
+    upper_year = request.form['upper_year']
+    upper_month = request.form['upper_month']
+    upper_day = request.form['upper_day']
+
+    low_date = '-'.join([lower_year, lower_month, lower_day])
+    upper_date = '-'.join([upper_year, upper_month, upper_day])
+
+    orders = Order.query.filter(
+        Order.date >= low_date,
+        Order.date <= upper_date, 
+        ).all()
+    items = {}
+    total = 0
+
+    for order in orders:
+        for item in order.items:
+            if cate_id != '' and item.cate_id == int(cate_id):
+                if item not in items:
+                    items[item] = int(order.count.split('|')[order.items.index(item)])
+                else:
+                    items[item] = int(items[item] + order.count.split('|')[order.items.index(item)])
+            else:
+                if item not in items:
+                    items[item] = int(order.count.split('|')[order.items.index(item)])
+                else:
+                    items[item] = int(items[item] + order.count.split('|')[order.items.index(item)])
+
+    for i in items:
+        total += int(items[i]) * i.price
+
+    return render_template('back/salesdata_list.html', items = items, total = total)

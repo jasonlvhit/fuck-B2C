@@ -42,32 +42,32 @@ document.form1.webUserEntity.order="";
 		<div id="sendnote">
 			<div id="sendnotehead"><strong>销售量查询</strong></div>
 			<div id="sendnotecontent">
-				<form action="" method="post" enctype="multipart/form-data" name="form1">
+				<form action="/do_salesdata" method="post" name="form1">
 				<table id="tradequery">
 				   <tr>
 					<th>起始时间:&nbsp;</th>
             		<td>
-						<select name="year">
-              				<option>2007</option>
-              				<option>2006</option>
+						<select name="lower_year">
+              				<option value="2007">2007</option>
+              				<option value="2006">2006</option>
               			</select>
 						&nbsp;年&nbsp;
-						<select name="month">
-              				<option>01</option>
-             				<option>02</option>
-              				<option>03</option>
-              				<option>04</option>
-			  				<option>05</option>
-              				<option>06</option>
+						<select name="lower_month">
+              				<option value="1">01</option>
+             				<option value="2">02</option>
+              				<option value="3">03</option>
+              				<option value="4">04</option>
+			  				<option value="5">05</option>
+              				<option value="6">06</option>
             			</select>
 						&nbsp;月&nbsp;
-						<select name="day">
-              				<option>01</option>
-              				<option>02</option>
-              				<option>03</option>
-              				<option>04</option>
-			  				<option>05</option>
-              				<option>06</option>              
+						<select name="lower_day">
+              				<option value="1">01</option>
+              				<option value="2">02</option>
+              				<option value="3">03</option>
+              				<option value="4">04</option>
+			  				<option value="5">05</option>
+              				<option value="6">06</option>              
             			</select>
 						&nbsp;日
 					</td>
@@ -75,27 +75,27 @@ document.form1.webUserEntity.order="";
 				 <tr>
 				 <th>结束时间:&nbsp;</th>
             		<td>
-						<select name="year">
-              				<option>2007</option>
-              				<option>2006</option>
+						<select name="upper_year">
+              				<option value="2015">2015</option>
+              				<option value="2014">2014</option>
               			</select>
 						&nbsp;年&nbsp;
-						<select name="month">
-              				<option>01</option>
-             				<option>02</option>
-              				<option>03</option>
-              				<option>04</option>
-			  				<option>05</option>
-              				<option>06</option>
+						<select name="upper_month">
+              				<option value="1">01</option>
+             				<option value="2">02</option>
+              				<option value="3">03</option>
+              				<option value="4">04</option>
+			  				<option value="5">05</option>
+              				<option value="6">06</option>
             			</select>
 						&nbsp;月&nbsp;
-						<select name="day">
-              				<option>01</option>
-              				<option>02</option>
-              				<option>03</option>
-              				<option>04</option>
-			  				<option>05</option>
-              				<option>06</option>              
+						<select name="upper_day">
+              				<option value="1">01</option>
+              				<option value="2">02</option>
+              				<option value="3">03</option>
+              				<option value="4">04</option>
+			  				<option value="5">05</option>
+              				<option value="6">06</option>              
             			</select>
 						&nbsp;日
 					</td>
@@ -104,17 +104,16 @@ document.form1.webUserEntity.order="";
 				 <th>类别：</th>
             		<td>
 					  	<select name="category">
-			    <option value="5">所有类别</option>
-                <option value="1">图书音像</option>
-                <option value="2">时尚生活</option>
-                <option value="3">饰品配件</option>
-                <option value="4">数码产品</option>
+			    <option value="">所有类别</option>
+				{% for dir in g.top_dir %}
+					<option value = "{{ dir.id }}">{{ dir.dir_name }}</option>
+                {% endfor %}
               </select> 
 					</td>
           		 </tr>
 				 <tr>
 				 <th></th>
-				 	<td><input type="Button" class="bt2" name="button22" value="查询" onClick="javascript:window.location.href='salesdata_list.html'"><td>
+				 	<td><input type="submit" class="bt2" name="button22" value="查询"><td>
 				 </tr>
         </table>
 		</form>  		

@@ -4,7 +4,7 @@
 			<form action = "{{ url_for('item_search') }}", method = 'post'>
 			  <select name="cate_id" id="searchrightcategory">
 				<option value="">所有类别</option>
-				{% for dir in top_dir %}
+				{% for dir in g.top_dir %}
 					<option value = "{{ dir.id }}">{{ dir.dir_name }}</option>
                 {% endfor %}
               </select>

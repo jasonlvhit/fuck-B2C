@@ -30,7 +30,7 @@
             		<td>{{ cart_list.index(item) }}
             		</td>
 					<td>
-						<a href="item_info.html">{{ item[0].item_name }}</a>					
+						<a href="/item_info/{{ item[0].id }}">{{ item[0].item_name }}</a>					
 					</td>
 					<td>￥{{ item[0].price }}
 					</td>
@@ -70,7 +70,7 @@
 						<td></td>
 						<td></td>
 					<td>
-					<a href="account_check.html"><img src="{{ url_for('static', filename = 'web/image/check_account.gif') }}" class="picture"/></a>				  					</td>
+					<a href="/order_confirm"><img src="{{ url_for('static', filename = 'web/image/check_account.gif') }}" class="picture"/></a>				  					</td>
 					</tr>
 				 </tbody>
             </table>

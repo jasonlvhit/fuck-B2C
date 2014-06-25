@@ -1,35 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-<title>BC2商城</title>
-<link href="{{ url_for('static', filename='back/css/frame.css') }}" rel="stylesheet" type="text/css">
-<script language="javascript" src="{{ url_for('static', filename='back/js/checkform.js') }}">
-
-</script>
-
-</head>
-
-<body>
-<div id="container">
-	<div id="logalleft">
-		<div id="logalright">
-		<a href="" target="_parent">管理员 已登录|</a>
-	 	<a href="home.html" target="_parent">退出</a>
-		</div>
-	</div>
-	<div id="globallink">
-		<ul>
-			<li><a href="home.html">首页</a></li>
-			<li><a href="category_list.html">商品管理</a></li>
-			<li><a href="order_admin.html">订单管理</a></li>
-			<li><a href="salesdata_admin.html">销售量统计</a></li>
-			<li><a href="user_admin.html">会员管理</a></li>
-			<li><a href="" class="nouseful">&nbsp;</a></li>
-			<li><a href="" class="nouseful">&nbsp;</a></li>
-			<li><a href="" class="nouseful">&nbsp;</a></li>
-		</ul>
-	</div>
-	<div id="banner"></div>
+{% extends 'back/layout.html' %}
+{% block body %}
 	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
@@ -40,7 +10,7 @@
 		<div id="sendnote">
 			<div id="sendnotehead"><strong>查询结果</strong></div>
 			<div id="sendnotecontent">
-			<form action="" method="post" enctype="multipart/form-data" name="form1">
+			<form action="/order_approve" method="post" name="form1"  onsubmit="return checkorderselect()">
 				<table id="favorite">
 				<thead>
 					<tr>
@@ -54,33 +24,27 @@
 					</tr>
 				</thead>
 				<tbody>
+					{% for order in orders %}
 				  <tr>
-				  	<td><input type="radio" name="ordersn" value="1483728" disabled="disabled"></td>
-					<td>1483728</td>
-            		<td>zhangtong123@163.com</td>
-					<td>2007-10-01&nbsp;10:25:04</td>
+				  	<td><input type="radio" name="order_id" value="{{ order.id }}"></td>
+					<td>{{ order.id }}</td>
+            		<td>{{ email[orders.index(order)]}}</td>
+					<td>{{ order.date }}</td>
+					{% if order.status == 0 %}
+					<td>待支付</td>
+					{% elif order.status == 1 %}
+					<td>正在支付</td>
+					{% else %}
 					<td>已支付</td>
+					{% endif %}
+					{% if order.is_confirm %}
 					<td>已审核</td>
-					<td><a href="order_info.html"><img src="../image/xq.gif" alt="详情" class="picture"></a></td>
-          		  </tr>
-				  <tr>
-				  	<td><input type="radio" name="ordersn" value="1483729" disabled="disabled"></td>
-					<td>1483729</td>
-            		<td>zhangtong123@163.com</td>
-					<td>2007-10-12&nbsp;16:02:24</td>
-					<td>已支付</td>
-					<td>已审核</td>
-					<td><a href="#"><img src="../image/xq.gif" alt="详情"  class="picture"></a></td>
-          		  </tr>
-				  <tr>
-				  	<td><input type="radio" name="ordersn" value="1491025" checked="checked"></td>
-					<td>1491025</td>
-            		<td>wangxj123@163.com</td>
-					<td>2007-11-15&nbsp;14:25:36</td>
-					<td>已支付</td>
+					{% else %}
 					<td>未审核</td>
-					<td><a href="#"><img src="../image/xq.gif" alt="详情" class="picture"></a></td>
+					{% endif %}
+					<td><a href="/order_info/{{ order.id }}"><img src="../image/xq.gif" alt="详情" class="picture"></a></td>
           		  </tr>
+					{% endfor %}
 				  <tr>
 				  	<td></td>
 					<td></td>
@@ -88,7 +52,7 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><input type="Button" class="bt2" name="button22" value="审核" onClick="checkorderselect()"></td>
+					<td><input type="submit" class="bt2" name="button22" value="审核"></td>
           		  </tr>
 				
 				 </tbody>
@@ -96,12 +60,5 @@
 			</form> 
 			</div>
 		</div>
-		
-	<div id="footer">
-		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
-		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
-	</div>
-</div>
 
-</body>
-</html>
+{% endblock %}

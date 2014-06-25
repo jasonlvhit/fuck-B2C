@@ -56,40 +56,18 @@ document.form1.webUserEntity.phone="";
 					</tr>
 				</thead>
 				<tbody>
+				{% for i in items.keys() %}
 				  <tr>
-            		<td>300254</td>
-					<td><a href="item_info.html">大学物理学.第四册：波动与光学（第2版）</a></td>
-					<td>500</td>
-					<td>￥8.50</td>
-					<td>￥4250</td>
+            		<td>{{ i.id }}</td>
+					<td><a href="item_info.html">{{ i.item_name }}</a></td>
+					<td>{{ items[i] }}</td>
+					<td>￥{{ i.price }}</td>
+					<td>￥{{ i.price * items[i] }}</td>
           		  </tr>
-				  <tr>
-            		<td>300040</td>
-					<td><a href="#">大学物理学.第一册：力学（第2版）</a></td>
-					<td>300</td>
-					<td>￥13.60</td>
-					<td>￥4080</td>
-          		  </tr>
-				   <tr>
-            		<td>300095</td>
-					<td><a href="#">大学物理学.第二册：热学（第2版）</a></td>
-					<td>450</td>
-					<td>￥8.08</td>
-					<td>￥3636</td>
-          		  </tr>
-				  <tr>
-            		<td>400212</td>
-					<td><a href="#">异国靓包系列-时尚女挎包A-03款(黄色)</a></td>
-					<td>100</td>
-					<td>￥145</td>
-					<td>￥14500</td>
-          		  </tr>
-				   <tr>
-            		<td></td>
-					<td></td>
-					<td></td>
+          		  {% endfor %}
+				<td></td><td></td><td></td>
 					<td>总销售额：</td>
-					<td><span class="red">￥26466</span></td>
+					<td><span class="red">￥{{ total }}</span></td>
           		  </tr>
 				 </tbody>
             </table>
