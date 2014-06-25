@@ -10,7 +10,7 @@
 		<div id="sendnote">
 			<div id="sendnotehead"><strong>编辑商品目录</strong></div>
 			<div id="sendnotecontent">
-			<form action="" method="post"  name="form1"  onsubmit="return checkcategoryform()">
+			<form action="" method="post"  name="form1" enctype="multipart/form-data" onsubmit="return checkcategoryform()">
 				<table id="itemsearch">
 				   <tr>
 					<th width="180">目录名称：</th>
@@ -36,16 +36,16 @@
 				 <textarea name="description" class="textAreaStyle">{{ origin_info_set['description'] }}</textarea>
 				 </td>
           		 </tr>
-          		 <!--
+          		 
 				 <tr>
 				 <th>目录图片：</th>
-         	 	    <input type="file" name="file">&nbsp;<input type="submit" name="Submit" value="上传"></td>
+         	 	    <input type="file" name="file">&nbsp;</td>
           		 </tr>
-          		-->
+          		
 				 <tr>
 				 <th></th>
 			 	  <td>
-				  <input type="submit" name="button2" value="提交"">
+				  <input type="submit" name="button2" value="提交">
 				  <input type="Reset" name="button1" value="重填" onClick="clear()">
 				  <input type="Button" name="button22" value="返回" onClick="javascript:window.location.href='/edit_dir'">				  
 				  </td> </tr>

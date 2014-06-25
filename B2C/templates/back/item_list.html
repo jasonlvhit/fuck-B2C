@@ -10,7 +10,7 @@
 		<div id="double1">
 			<div id="doublehead1"><strong>商品列表</strong></div>
 			<div id="doublecontent1">
-			<form action="{{ url_for('add_item') }}" method="post"  name="form1"  onsubmit = "return checkitemform()">
+			<form action="{{ url_for('add_item') }}" method="post"  name="form1" enctype="multipart/form-data"  onsubmit = "return checkitemform()">
 				<table id="xialabiao">
 				<tr>
 		{% for i in items %}
@@ -18,8 +18,8 @@
 		  
           <tr>
             <td width="7%" rowspan="4" align="center"><span class="red">{{ items.index(i) }}</span></td>
-            <!--<td width="16%" rowspan="4" align="center" class="inputHeader"><img src="../image/dxwl2.jpg" alt="大学物理第2册" width="70" height="100"></td>
-			-->
+            <td width="16%" rowspan="4" align="center" class="inputHeader"><img src="{{ url_for('static', filename = i.image[11:] ) }}" alt="{{ i.item_name }}" width="70" height="100"></td>
+			
 			<td align="left" class="inputHeader"><span class="red">{{ i.item_name }}</span></font></td>
 			</tr>
           <tr>
@@ -58,14 +58,12 @@
           		 </tr>
           		 <input type="text" name="cate_id" value="{{ cate_id }}"  style="display:none;"/>
 				 <tr>
-				 <!--
+				
 				 <th><span class="inputHeader">商品图片：</span></th>
 					<td>
-         	 	    <input type="file" name="pic">&nbsp;<input type="submit" name="Submit" value="上传"></td>
+         	 	    <input type="file" name="file">&nbsp;</td>
 					<td></td>
-          		 </tr>
-          		-->
-				  <tr>
+          		 
 				 <th>市场价：</th>
 					<td><input type="text" name="price" class="smallinputext" value=""></td>
 					<td><span class="red">*必输项</span></td>

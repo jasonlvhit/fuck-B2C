@@ -1,3 +1,4 @@
+import os
 import sys
 import random
 import smtplib
@@ -450,19 +451,28 @@ def edit_dir():
         
     return render_template('back/category_list.html', error=error,top_level=TopDirectory.query.all(), count=0)
 
+@app.route('/upload_item_pic', methods = ['POST'])
+def upload_item_pic():
+    file = request.files['pic']
+    if file.filename:
+        filename = secure_filename(file.filename)
+        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(path)
+    return redirect(url_for('', path = path))
+
 @app.route('/add_dir', methods=['POST', 'GET'])
 @admin_required
 def add_dir(origin_info_set='{}', top = False):
     if request.method == 'POST':
         top_level = False
-        '''
+        
         file = request.files['file']
         path = ''
         if file.filename:
             filename = secure_filename(file.filename)
             path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(path)
-        '''
+        
         if 'origin_info_set' in request.args:
             o = eval(request.args['origin_info_set'])
             if 'top' in request.args:
@@ -475,7 +485,7 @@ def add_dir(origin_info_set='{}', top = False):
             db.session.commit()
             return redirect(url_for('edit_dir'))
 
-        path = ''
+        
         if request.form['parent'] == '':
             d = TopDirectory(request.form['name'], request.form['description'],
                              path)
@@ -508,7 +518,15 @@ def item_list(cate_id):
 
 @app.route('/add_item', methods = ['POST'])
 def add_item():
-    a = Item(request.form['name'], request.form['description'], request.form['price'], request.form['discount'], request.form['storage'], request.form['cate_id'])
+    
+    file = request.files['file']
+    path = ''
+    if file.filename:
+        filename = secure_filename(file.filename)
+        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(path)
+
+    a = Item(request.form['name'], request.form['description'], request.form['price'], request.form['discount'], request.form['storage'], request.form['cate_id'], image = path)
     cate = Directory.query.filter_by(id = request.form['cate_id']).first()
     cate.items.append(a)
     db.session.add(a)
@@ -519,6 +537,15 @@ def add_item():
 def edit_item(id):
     if request.method == 'POST':
         i = Item.query.filter_by(id = id).first()
+        file = request.files['pic']
+        path = ''
+        if file.filename:
+            filename = secure_filename(file.filename)
+            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            if path != i.image:
+                file.save(path)
+                i.image = path
+        
         i.item_name = request.form['name']
         i.price = request.form['price']
         i.description = request.form['desc']

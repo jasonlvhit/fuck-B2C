@@ -17,7 +17,7 @@
 				</caption>
 				<tbody>
 				<tr>
-          <td><!--img src="../image/dxwl4.jpg" alt="大学物理第四册" class="picture1"--></td>
+          <td><img src="{{ url_for('static', filename = item.image[11:]) }}" alt="{{ item.item_name }}" class="picture1"></td>
           <td colspan="4" class="tdleftalign">{{ item.description }}</td>
         </tr>
         <tr>

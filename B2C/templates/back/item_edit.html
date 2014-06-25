@@ -10,7 +10,7 @@
 		<div id="sendnote">
 			<div id="sendnotehead"><strong>编辑商品</strong></div>
 			<div id="sendnotecontent">
-			<form action="" method="post" onsubmit ="return checkitemform()" name="form1">
+			<form action="" method="post" onsubmit ="return checkitemform()" name="form1" enctype="multipart/form-data">
 				<table id="itemsearch">
 				   <tr>
 					<th width="180">商品名称：</th>
@@ -24,14 +24,15 @@
 				 <td><textarea name="desc" class="textAreaStyle">{{ item.description }}</textarea></td>
 				 <td></td>
           		 </tr>
-          		 <!--
+          		 
 				 <tr>
 				 <th><span class="inputHeader">商品图片：</span></th>
-					<td><img src="../image/dxwl4.jpg" alt="大学物理第4册" class="picture1"><br>
-         	 	    <input type="file" name="pic">&nbsp;<input type="submit" name="Submit" value="上传"></td>
+					<td><img src="{{ url_for('static', filename = item.image[11:]) }}" alt="{{ item.item_name }}" class="picture1"><br>
+         	 	    <input type="file" name="pic">&nbsp;</td>
 					<td></td>
           		 </tr>
-          		 -->
+
+          		 </form>
 				 <tr>
 				 <th>市场价：</th>
 					<td><input type="text" name="price" class="smallinputext" value="{{ item.price }}"></td>

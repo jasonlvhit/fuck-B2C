@@ -28,7 +28,7 @@
 						<span>{{ items.index(i) + 1 }}</span>
 					</td>
 					<td>
-						<a href="{{ url_for('item_info', id = i.id) }} ">detail<!--img src="../image/dxwl4.jpg" class="picture1"/></a--></a>
+						<a href="{{ url_for('item_info', id = i.id) }} "><img src="{{ url_for('static', filename = i.image[11:]) }}" class="picture1"/></a>
 					</td>
 					<td>
 						<span class="red">{{ i.item_name }}</span><br>
