@@ -53,7 +53,9 @@ def get_user_id(email=None):
 
 @app.route("/")
 def index():
-    return render_template("web/home.html")
+    items = Item.query.all()
+
+    return render_template("web/home.html", items=items)
 
 # do the real search stuff
 
@@ -734,6 +736,7 @@ def _get_credit_percent():
 @app.route('/order_confirm', methods=['GET'])
 def order_confirm():
 
+    session['credit'] = int(session['credit'])
     address = Address.query.get(session['address'])
     if address.is_local:
         deliver = 5
@@ -817,6 +820,7 @@ def do_salesdata():
         Order.date >= low_date,
         Order.date <= upper_date,
     ).all()
+
     items = {}
     total = 0
 
