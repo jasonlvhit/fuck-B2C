@@ -727,7 +727,7 @@ def _get_credit_percent():
         return tmp.silver_percent
     elif g.user.points >= tmp.gold:
         return tmp.gold_percent
-    elif g.user.points >= pt:
+    elif g.user.points >= tmp.pt:
         return tmp.pt_percent
     else:
         return 1.0
