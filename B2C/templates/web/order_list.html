@@ -12,8 +12,8 @@ document.form1.webUserEntity.phone="";
 	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
-				<img src="../image/ico_site.jpg" id="ico_site"/>
-				网站路径：<a href="home.html">首页</a>&gt;&gt;<a href="">历史交易查询</a>			</div>
+				<img src="{{ url_for('static', filename='web/image/ico_site.jpg') }}" id="ico_site"/>
+				网站路径：<a href="/">首页</a>&gt;&gt;<a href="">历史交易查询</a>			</div>
 			<div id="searchright2">
 			  <input type="text" name="product" id="textInput"/>
 			  <input type="button" name="Submit" value="搜索" id="searchbutton" onClick="javascript:window.open('item_search_list.html','_parent','')">
