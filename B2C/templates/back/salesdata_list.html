@@ -1,45 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-<title>BC2商城</title>
-<link href="{{ url_for('static', filename='back/css/frame.css') }}" rel="stylesheet" type="text/css">
-<script language="javascript">
-function clear(){
-
-document.form1.webUserEntity.name="";
-document.form1.webUserEntity.address="";
-document.form1.webUserEntity.postcode="";
-document.form1.webUserEntity.phone="";
-}
-</script>
-   </head>
-
-<body>
-<div id="container">
-	<div id="logalleft">
-		<div id="logalright">
-		<a href="" target="_parent">管理员 已登录|</a>
-	 	<a href="home.html" target="_parent">退出</a>
-		</div>
-	</div>
-	<div id="globallink">
-		<ul>
-			<li><a href="home.html">首页</a></li>
-			<li><a href="category_list.html">商品管理</a></li>
-			<li><a href="order_admin.html">订单管理</a></li>
-			<li><a href="salesdata_admin.html">销售量统计</a></li>
-			<li><a href="user_admin.html">会员管理</a></li>
-			<li><a href="" class="nouseful">&nbsp;</a></li>
-			<li><a href="" class="nouseful">&nbsp;</a></li>
-			<li><a href="" class="nouseful">&nbsp;</a></li>
-		</ul>
-	</div>
-	<div id="banner"></div>
+{% extends 'back/layout.html' %}
+{% block body %}
 	<div id="main">
 		<div id="search2">
 			<div id="searchleft">
-				<img src="../image/ico_site.jpg" id="ico_site"/>
-				网站路径：<a href="salesdata_admin.html">销售量统计</a>&gt;&gt;<a href="#">销售量查询结果</a></div>
+				<img src="{{ url_for('static', filename='web/image/ico_site.jpg') }}" id="ico_site"/>
+				网站路径：<a href="/salesdata_admin">销售量统计</a>&gt;&gt;<a href="#">销售量查询结果</a></div>
 		</div>
 		<div id="sendnote">
 			<div id="sendnotehead"><strong>查询结果</strong></div>
@@ -59,7 +24,7 @@ document.form1.webUserEntity.phone="";
 				{% for i in items.keys() %}
 				  <tr>
             		<td>{{ i.id }}</td>
-					<td><a href="item_info.html">{{ i.item_name }}</a></td>
+					<td><a href="/item_info/{{ i.id }}">{{ i.item_name }}</a></td>
 					<td>{{ items[i] }}</td>
 					<td>￥{{ i.price }}</td>
 					<td>￥{{ i.price * items[i] }}</td>
@@ -75,11 +40,4 @@ document.form1.webUserEntity.phone="";
 			</div>
 		</div>
 		
-	<div id="footer">
-		<span id="footerleft"> &nbsp;隐私权 | 版权 | 法律声明 | 电子邮件：admin@163.com </span>
-		<span id="footerright"> B2C商城  Power by IBM &nbsp;</span>
-	</div>
-</div>
-
-</body>
-</html>
+{% endblock %}
