@@ -80,7 +80,7 @@ def _search(keyword=None, cate_id=None, price_level=0, discount_level=0):
         4: {"lower_bound": 0.7, "upper_bound": 1.0}
     }
 
-    items = Item.query.filter(Item.item_name == keyword,
+    items = Item.query.filter(Item.item_name.like(''.join(['%',keyword,'%'])),
                               Item.price >= price_map[
                                   price_level]['lower_bound'],
                               Item.price < price_map[
