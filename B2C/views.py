@@ -666,8 +666,12 @@ def collection():
 @login_required
 def remove_from_collection(id):
     assert request.method == 'GET'
+    '''
     db.session.execute(
         user_collection_re.delete(), {'item_id': id, 'user_id': g.user.id})
+    '''
+    c = Item.query.get(id)
+    g.user.collection.remove(c)
     db.session.commit()
     return redirect(url_for('collection'))
 
